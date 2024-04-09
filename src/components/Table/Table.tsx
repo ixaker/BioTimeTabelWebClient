@@ -1,5 +1,6 @@
 import React from 'react';
-import { useTable } from 'react-table';
+import { Column,useTable } from 'react-table';
+
 
 interface Data {
   name: string;
@@ -15,7 +16,7 @@ interface Props {
 }
 
 const Table: React.FC<Props> = ({ data }) => {
-  const columns = React.useMemo(
+  const columns: Column<Data>[] = React.useMemo(
     () => [
       {
         Header: 'Співробітник',
@@ -24,7 +25,7 @@ const Table: React.FC<Props> = ({ data }) => {
       {
         Header: 'День/ніч',
         accessor: 'type' ,
-        Cell: ({ value }) => (value === 'd' ? 'Д' : 'Н'),
+        Cell: ({value}: {value: string}) => (value === 'd' ? 'Д' : 'Н'),
       },
       {
         Header: 'Прихід',
