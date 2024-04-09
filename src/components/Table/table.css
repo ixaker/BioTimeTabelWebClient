@@ -1,0 +1,53 @@
+.container {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  
+  .thead th {
+    border: 1px solid black;
+    padding: 5px 5px 5px 5px;
+    background: #007431;
+    color: white;
+    font-size: 17px;
+               
+  }
+  
+  .tbody td {
+    border: 1px solid rgb(189, 189, 189);
+    padding: 5px;
+  }
+
+  tr {
+    
+  }
+
+  td {
+    text-align: center;
+    
+  }
+
+  .name-cell {
+    text-align: left;
+    width: 40%;
+  }
+
+  .type-cell {
+    width: 10%;
+  }
+
+  .arrival-cell {
+    /* width: 12%; */
+  }
+
+  .departure-cell {
+    /* width: 12%; */
+  }
+
+  .duration-cell {
+    width: 20px;
+  }
+
+  .total-cell {
+    /* width: 12%; */
+  }

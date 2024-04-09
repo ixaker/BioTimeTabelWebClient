@@ -1,8 +1,8 @@
-
+import './header.css'
 
 const Header = () => {
   return (
-    <div>
+    <div className="container">
       <h1>Табель відвідування</h1>
     </div>
   )
