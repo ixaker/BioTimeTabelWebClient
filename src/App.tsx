@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import './App.css'
 import Header from './components/Header/Header'
 import Slider from './components/Slider/Slider'
@@ -36,7 +36,7 @@ function App() {
   };
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  
 
   return (
     <>
