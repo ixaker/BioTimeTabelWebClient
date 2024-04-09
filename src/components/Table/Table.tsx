@@ -3,6 +3,7 @@ import { useTable } from 'react-table';
 
 interface Data {
   name: string;
+  type: string;
   arrival: string;
   departure: string;
   duration: string;
