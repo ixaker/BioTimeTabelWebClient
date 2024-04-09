@@ -1,7 +1,6 @@
 import { useQuery } from 'react-query';
-import jsonData from './../../assets/data.json'
 
-export function useUserData(url) {
+export function useUserData(url: string) {
   console.log(url)
   return useQuery('userData', async () => {
     const response = await fetch(url); 

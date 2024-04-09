@@ -1,7 +1,13 @@
 import { useState } from 'react'
 import './slider.css'
 
-const Slider = ({ handleSliderClick, date }) => {
+
+interface SliderProps {
+    handleSliderClick: (arg: { number: number }) => void;
+    date: string;
+  }
+
+const Slider: React.FC<SliderProps>= ({ handleSliderClick, date }) => {
     const [number, setNumber] = useState(1);
     
     const handleLeftArrowClick = () => {
