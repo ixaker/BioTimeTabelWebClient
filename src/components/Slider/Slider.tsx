@@ -10,6 +10,7 @@ interface SliderProps {
 const Slider: React.FC<SliderProps>= ({ handleSliderClick, date }) => {
     const [number, setNumber] = useState(1);
     
+    
     const handleLeftArrowClick = () => {
         setNumber(1); 
         console.log(number);
@@ -31,7 +32,7 @@ const Slider: React.FC<SliderProps>= ({ handleSliderClick, date }) => {
                 <i className="bi bi-arrow-left-circle btnArrow slider-arrows" onClick={handleLeftArrowClick}></i>
             </div>
             <div>
-                <input type="text" className="date-input slider-input" value={date}/>
+                <span className="date-input slider-input">{date}</span>
             </div>
             <div>
                 <i className="bi bi-arrow-right-circle btnArrow slider-arrows" onClick={handleRightArrowClick}></i>

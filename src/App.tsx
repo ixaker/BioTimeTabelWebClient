@@ -3,46 +3,39 @@ import './App.css'
 import Header from './components/Header/Header'
 import Slider from './components/Slider/Slider'
 import Table from './components/Table/Table'
-import { useQuery } from 'react-query';
+import WebSocket from './components/WebSocket/WebSocket'
 import jsonData from './assets/data.json'
 import jsonData2 from './assets/data2.json'
+import getCurrentDate from './components/utils/getCurrentDate'
+import { useAppContext } from './State/AppProvider'
+
 function App() {
-
+  const { state } = useAppContext();
+  console.log(state);
   
-
   const [tableData, setTableData] = useState(jsonData);
-  const [date, setDate] = useState<string>('');
-  const [postId, setPostId] = useState<number>(1);
-  const { isLoading, error, data } = useQuery<{}>(['userData', postId], async () => {
-    const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`);
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  });
-
-  console.log(data);
+  const [date, setDate] = useState<string>(getCurrentDate());
   
   
   const handleSliderClick = ({ number }: { number: number }) => {
-    setPostId(number);
+    
     if (number === 1) {
       setTableData(jsonData)
       setDate('09.04.2024')
     } else {
       setTableData(jsonData2)
-      setDate('10.04.2024')
+      setDate('11.04.2024')
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
   
 
   return (
     <>
+      <WebSocket />
       <Header />
       <Slider handleSliderClick={handleSliderClick} date={date}/>
-      <Table data={tableData}/>
+      <Table data={state.data}/>
     </>
   )
 }

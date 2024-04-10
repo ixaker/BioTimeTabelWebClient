@@ -4,12 +4,13 @@ import './table.css'
 
 
 interface Data {
-  name: string;
-  type: string;
-  arrival: string;
-  departure: string;
-  duration: string;
-  total: string;
+  id: number; //id працівника
+  name: string; // ПІБ працівника
+  type: "d" | "n"; // тип зміни бути тільки "d" - денна або "n" - нічна
+  arrival: string; // прихід
+  departure: string; // ухід
+  duration: string; // тривалість зміни
+  total: string; // час, який зараховується
 }
 
 interface Props {
