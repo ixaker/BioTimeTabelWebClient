@@ -1,28 +1,25 @@
-import { useState } from 'react'
 import './slider.css'
 
 
 interface SliderProps {
-    handleSliderClick: (arg: { number: number }) => void;
+    handleSliderClick: (update: 'increase' | 'decrease') => void;
     date: string;
   }
 
 const Slider: React.FC<SliderProps>= ({ handleSliderClick, date }) => {
-    const [number, setNumber] = useState(1);
+    
     
     
     const handleLeftArrowClick = () => {
-        setNumber(1); 
-        console.log(number);
+        console.log('handleLeftArrowClick');
         
-        handleSliderClick({number: 1}) 
+        handleSliderClick('decrease') 
          };
     
       const handleRightArrowClick = () => {
-        setNumber(2);
-        console.log(number);
-
-        handleSliderClick({number: 2})
+        console.log('handleRightArrowClick');
+        
+        handleSliderClick('increase')
       };
 
     return (

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useAppContext } from '../../State/AppProvider';
 
@@ -7,25 +7,27 @@ interface ServerToClientEvents {
     disconnect: () => void;
     error: (error: Error) => void;
     list: (data: rowData[]) => void;
-    update: (data: string) => void;
+    update: (data: rowData) => void;
 }
   
 interface ClientToServerEvents {
     getList: (data: { date: string }) => void;
 }
 interface rowData {
-    id: number;         // id рядка
-    emp_code: number;   // id працівника
-    name: string;       // ПІБ працівника
-    type: "d" | "n";    // тип зміни бути тільки "d" - денна або "n" - нічна
-    arrival: string;    // прихід
-    departure: string;  // ухід
-    duration: string;   // тривалість зміни
-    total: string;      // час, який зараховується
+    id: number;        
+    emp_code: number;  
+    name: string;      
+    type: "d" | "n";   
+    arrival: string;   
+    departure: string; 
+    duration: string;  
+    total: string;     
 }
-const WebSocket: React.FC = () => {
+const WebSocket: React.FC<{ date?: string }> = ({date}) => {
     const { dispatch } = useAppContext();
-
+    console.log(date);
+    
+    const memoizedDate = useMemo(() => date, [date]);
 
     useEffect(() => {
         const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io('http://10.8.0.4:3000');
@@ -45,10 +47,10 @@ const WebSocket: React.FC = () => {
         });
     
         socket.on('disconnect', () => {
-        console.log('WebSocket disconnected');
+            console.log('WebSocket disconnected');
         });
 
-        socket.emit('getList', { date: "10.04.2024" } as { date: string });
+        socket.emit('getList', { date } as { date: string });
 
         socket.on('error', (error: Error) => {
         console.error('WebSocket error:', error);
@@ -57,7 +59,7 @@ const WebSocket: React.FC = () => {
         return () => {
         socket.disconnect();
         };
-    }, []);
+    }, [memoizedDate]);
 
     return null;
     };

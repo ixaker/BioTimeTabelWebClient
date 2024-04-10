@@ -1,13 +1,11 @@
 // AppProvider.tsx
 import React, { createContext, useContext, useReducer } from 'react';
-import reducer, { Action } from './reducer';
+import reducer, { AppState, Action } from './reducer';
+
 
 const initialState: AppState = {
     data: [],
   };
-interface AppData {
-  
-}
 
 interface AppProviderProps {
     children: React.ReactNode;
@@ -34,7 +32,6 @@ export const useAppContext = () => {
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     
-
   return (
     <AppContext.Provider value={{ state, dispatch }}>
       {children}

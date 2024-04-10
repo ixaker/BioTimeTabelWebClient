@@ -1,14 +1,29 @@
+type Data = {
+    id: number;        
+    emp_code: number;  
+    name: string;      
+    type: "d" | "n";   
+    arrival: string;   
+    departure: string; 
+    duration: string;  
+    total: string;     
+}
+
+export type AppState = {
+    data: Data[];
+};
+
 type ReplaceAllAction = {
     type: 'REPLACE_ALL';
     payload: Data[]; 
   };
   
-  type UpdateOrAddDataAction = {
-    type: 'UPDATE_OR_ADD_DATA';
-    payload: Data; 
-  };
-  
-  export type Action = ReplaceAllAction | UpdateOrAddDataAction;
+type UpdateOrAddDataAction = {
+type: 'UPDATE_OR_ADD_DATA';
+payload: Data; 
+};
+
+export type Action = ReplaceAllAction | UpdateOrAddDataAction;
   
 const reducer = (state: AppState, action: Action): AppState => {
     let index;
@@ -17,7 +32,7 @@ const reducer = (state: AppState, action: Action): AppState => {
             console.log('REPLACE_ALL', action.payload);
             return { ...state, data: action.payload };
         case 'UPDATE_OR_ADD_DATA':
-            console.log('UPDATE_OR_ADD_DATA', action.payload);
+            
             index = state.data.findIndex(item => item.id === action.payload.id);
             if (index !== -1) {
                 console.log('UPDATE', action.payload);
