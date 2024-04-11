@@ -1,19 +1,13 @@
 import React from 'react';
-import { useToasts } from 'react-toast-notifications';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-interface ToastProps {
-  message: string;
-  appearance?: 'success' | 'error' | 'warning' | 'info';
-}
-
-const Toaster: React.FC<ToastProps> = ({ message, appearance = 'info' }) => {
-  const { addToast } = useToasts();
-
+const Toaster: React.FC<{ message: string, type?: string }> = ({ message, type = 'info' }) => {
   React.useEffect(() => {
-    addToast(message, { appearance });
-  }, []); // Додаємо тост під час монтування компонента
+    toast[type](message);
+  }, [message, type]); 
 
-  return null; // Компонент не відображає жодного DOM-елемента
+  return <ToastContainer />; 
 };
 
 export default Toaster;

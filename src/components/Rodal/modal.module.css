@@ -1,0 +1,21 @@
+.custom-modal {
+    background-color:yellow;
+    border: 2px solid green;
+  }
+  
+.custom-mask {
+    background-color:red;
+    border: 2px solid blue;
+}
+
+.warning {
+    border-radius: 10px;
+    border: 2px solid green;
+    width: 90%;
+}
+
+.success {
+    border-radius: 10px;
+    border: 2px solid green;
+    width: 90%;
+}

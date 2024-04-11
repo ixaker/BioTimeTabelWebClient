@@ -1,13 +1,14 @@
 import { useEffect, useMemo } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useAppContext } from '../../State/AppProvider';
-
+import { getMessageText } from './getMessageText';
 interface ServerToClientEvents {
     connect: () => void;
     disconnect: () => void;
     error: (error: Error) => void;
     list: (data: rowData[]) => void;
     update: (data: rowData) => void;
+    notification: (data: dataType) => void;
 }
   
 interface ClientToServerEvents {
@@ -22,11 +23,27 @@ interface rowData {
     departure: string; 
     duration: string;  
     total: string;     
+    state: string;
+    first_name: string;
+    error: boolean;
 }
-const WebSocket: React.FC<{ date?: string }> = ({date}) => {
+
+interface dataType {
+    first_name: string;
+    time: string;
+    state: string;
+    error: boolean;
+    msg: string;
+  }
+
+interface WebSocketProps {
+    date: string;
+}
+
+const WebSocket: React.FC<WebSocketProps> = ({date}) => {
+    console.log('WebSocket component run');
+    const { notify } = useAppContext();
     const { dispatch } = useAppContext();
-    console.log(date);
-    
     const memoizedDate = useMemo(() => date, [date]);
 
     useEffect(() => {
@@ -41,9 +58,14 @@ const WebSocket: React.FC<{ date?: string }> = ({date}) => {
             dispatch({ type: 'REPLACE_ALL', payload: data });
         });
 
-        socket.on('update', (data) => {
+        socket.on('update', (data: rowData) => {
             console.log('Update', data);
             dispatch({ type: 'UPDATE_OR_ADD_DATA', payload: data });
+        });
+
+        socket.on('notification', (data) => {
+            console.log('Notification', data);
+            notify(data);
         });
     
         socket.on('disconnect', () => {
@@ -53,7 +75,8 @@ const WebSocket: React.FC<{ date?: string }> = ({date}) => {
         socket.emit('getList', { date } as { date: string });
 
         socket.on('error', (error: Error) => {
-        console.error('WebSocket error:', error);
+            console.error('WebSocket connection error:', error);
+            
         });
 
         return () => {

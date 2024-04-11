@@ -9,13 +9,25 @@ type Data = {
     total: string;     
 }
 
+interface dataType {
+    first_name: string;
+    time: string;
+    state: string;
+    error: boolean;
+    msg: string;
+  }
+
 export type AppState = {
     data: Data[];
+    modal: {
+      visible: boolean;
+      data: dataType;
+    };
 };
 
 type ReplaceAllAction = {
-    type: 'REPLACE_ALL';
-    payload: Data[]; 
+    type: 'REPLACE_ALL',
+    payload: Data[]
   };
   
 type UpdateOrAddDataAction = {
@@ -23,19 +35,28 @@ type: 'UPDATE_OR_ADD_DATA';
 payload: Data; 
 };
 
-export type Action = ReplaceAllAction | UpdateOrAddDataAction;
+export type ModalAction = {
+    type: 'SET_MODAL';
+    payload: {
+        visible: boolean;
+        data: dataType;
+    };
+};
+
+export type Action = ReplaceAllAction | UpdateOrAddDataAction | ModalAction;
   
 const reducer = (state: AppState, action: Action): AppState => {
     let index;
     switch (action.type) {
         case 'REPLACE_ALL':
-            console.log('REPLACE_ALL', action.payload);
+            console.log('rudeucer REPLACE_ALL');
             return { ...state, data: action.payload };
         case 'UPDATE_OR_ADD_DATA':
             
             index = state.data.findIndex(item => item.id === action.payload.id);
             if (index !== -1) {
-                console.log('UPDATE', action.payload);
+                console.log('reducer UPDATE');
+                
                 return {
                     ...state,
                     data: [
@@ -45,12 +66,16 @@ const reducer = (state: AppState, action: Action): AppState => {
                     ],
                 };
             } else {
-                console.log('ADD', action.payload);
+                console.log('reducer ADD');
                 return {
                     ...state,
                     data: [...state.data, action.payload],
                 };
             }
+        case 'SET_MODAL':
+            console.log('case SET_MODAL');
+            console.log(action.payload);
+            return { ...state, modal: action.payload };
         default:
             return state;
     }

@@ -6,9 +6,9 @@ import { AppProvider } from './State/AppProvider.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   
-  <React.StrictMode>
+  // <React.StrictMode>
     <AppProvider>
       <App />
     </AppProvider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
