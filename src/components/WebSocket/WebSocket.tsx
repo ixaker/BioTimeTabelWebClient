@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useAppContext } from '../../State/AppProvider';
-import { getMessageText } from './getMessageText';
 interface ServerToClientEvents {
     connect: () => void;
     disconnect: () => void;
@@ -41,7 +40,7 @@ interface WebSocketProps {
 }
 
 const WebSocket: React.FC<WebSocketProps> = ({date}) => {
-    console.log('WebSocket component run');
+    
     const { notify } = useAppContext();
     const { dispatch } = useAppContext();
     const memoizedDate = useMemo(() => date, [date]);
@@ -49,8 +48,14 @@ const WebSocket: React.FC<WebSocketProps> = ({date}) => {
     useEffect(() => {
         const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io('http://10.8.0.4:3000');
 
+        const handleUpdate = (data: rowData) => {
+            console.log('Update', data);
+            dispatch({ type: 'UPDATE_OR_ADD_DATA', payload: data });
+        };
+
         socket.on('connect', () => {
             console.log('WebSocket connection established successfully');
+            socket.emit('getList', { date } as { date: string });
         });
 
         socket.on('list', (data) => {
@@ -58,10 +63,7 @@ const WebSocket: React.FC<WebSocketProps> = ({date}) => {
             dispatch({ type: 'REPLACE_ALL', payload: data });
         });
 
-        socket.on('update', (data: rowData) => {
-            console.log('Update', data);
-            dispatch({ type: 'UPDATE_OR_ADD_DATA', payload: data });
-        });
+        socket.on('update', handleUpdate)
 
         socket.on('notification', (data) => {
             console.log('Notification', data);

@@ -1,94 +1,79 @@
 // ModalComponent.tsx
-import React, {useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
 import { useAppContext } from '../../State/AppProvider';
-
-// interface ModalProps {
-//   visible: boolean;
-//   onClose: () => void;
-//   closeOnEsc?: boolean;
-//   showCloseButton?: boolean;
-//   className?: string;
-//   enterAnimation?: string;
-//   showMask?: boolean;
-//   customStyles?: { modal: string }; 
-//   customMaskStyles?: { mask: string };
-//   type: 'warning' | 'success';
-//   text: string;
-// }
+import CloseButton from './closeButton';
 
 const Modal: React.FC = () => {
-const [autoCloseTimer, setAutoCloseTimer] = useState<number | null>(null);
+
 const { state, dispatch } = useAppContext();
 const { modal } = state;
 const { visible, data } = modal;
+const [showModal, setShowModal] = useState(false);
+console.log(data);
+
+useEffect(() => {
+  if (visible) {
+    setShowModal(false);
+    setTimeout(() => {
+      setShowModal(true);
+    }, 200);
+    
+  } else {
+    setShowModal(false);
+  }
 
 
+}, [visible,data]);
 
+useEffect(() => {
+  setShowModal(visible); // Оновіть showModal при зміні visible
+}, [visible]);
 
-  useEffect(() => {
-    if (visible) {
-      startAutoCloseTimer();
-    } else {
-      cancelAutoCloseTimer();
-    }
-    return cancelAutoCloseTimer; 
-  }, [visible]);
-  
-  const startAutoCloseTimer = () => {
-    if (autoCloseTimer) {
-      clearTimeout(autoCloseTimer); // Скасовуємо попередній таймер, якщо він існує
-    }
-
+useEffect(() => {
+  if (visible) {
     const timer = setTimeout(() => {
       onClose();
-    }, 100000);
+    }, 60000); // 60000 мілісекунд = 1 хвилина
 
-    setAutoCloseTimer(timer); // Зберігаємо ідентифікатор таймера в стані
-  };
-
-  const cancelAutoCloseTimer = () => {
-    if (autoCloseTimer) {
-      clearTimeout(autoCloseTimer); // Скасовуємо таймер при закритті модального вікна вручну
-      setAutoCloseTimer(null);
-    }
-  };
+    return () => clearTimeout(timer);
+  }
+}, [visible]);
 
   const onClose = () => {
     dispatch({ type: 'SET_MODAL', payload: { visible: false,  data: modal.data} });
   };
 
   let customStyles = {};
-  console.log(data);
   
   if (data.error === true) {
     customStyles = { 
-      border: "2px solid red",
+      border: "3px solid red",
       borderRadius: "10px",
       padding: "10px",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      width: '80%',
+      width: '90%',
       height: "200px",
     }
   } else {
     customStyles = {
-      border: "1px solid green",
+      border: "3px solid green",
       borderRadius: "10px",
       padding: "10px",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      width: '80%',
+      width: '90%',
       height: "200px",
     };
   }
   
   return (
     <Rodal 
-        visible={visible} 
+        visible={showModal} 
         onClose={onClose} 
         
         closeOnEsc 
@@ -107,7 +92,7 @@ const { visible, data } = modal;
         border: "0px solid #ccc",
         borderRadius: "5px",
         padding: "10px",
-        width: "90%",
+        width: "95%",
         
       }}>
         <div style={{ 
@@ -118,17 +103,42 @@ const { visible, data } = modal;
         }}>
           <span style={{ 
             fontWeight: "bold", 
-            marginRight: "5px", 
+            marginRight: "0px", 
             fontSize: "30px",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
           }}>{data.state} -  {data.time}</span>
+          
         </div>
         <p style={{ 
           margin: 0,
+          marginBottom: "5px",
           fontSize: "30px",
           }}>{data.first_name}</p>
+          <p
+            style={{
+              color: "rgb(141, 4, 4)",
+              fontSize: "17px",
+              fontWeight: "bold",
+            }}
+          >
+            {data.msg}
+          </p>
+          <button onClick={
+            () => {
+              console.log("Button clicked!");
+              const newDataForModal = {
+                first_name: 'Другий модал',
+                time: 'asdf',
+                state: 'asdfasdf',
+                error: true,
+                msg: 'asdfsdf',
+            };
+              dispatch({ type: 'SET_MODAL', payload: { visible: true, data: newDataForModal } });
+            }
+          }>Click me!</button>
+      <CloseButton />
       </div>
     </Rodal>
   );

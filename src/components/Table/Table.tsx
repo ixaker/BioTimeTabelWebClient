@@ -1,5 +1,5 @@
 import React from 'react';
-import { Column,useTable } from 'react-table';
+import { Column, useTable } from 'react-table';
 import './table.css'
 
 
@@ -27,8 +27,8 @@ const Table: React.FC<Props> = ({ data }) => {
       },
       {
         Header: 'Д/H',
-        accessor: 'type' ,
-        Cell: ({value}: {value: string}) => (value === 'd' ? 'Д' : 'Н'),
+        accessor: 'type',
+        Cell: ({ value }: { value: string }) => (value === 'd' ? 'Д' : 'Н'),
         className: 'type-cell',
       },
       {
@@ -45,11 +45,6 @@ const Table: React.FC<Props> = ({ data }) => {
         Header: 'Трив.',
         accessor: 'duration',
         className: 'duration-cell',
-      },
-      {
-        Header: 'Всього',
-        accessor: 'total',
-        className: 'total-cell',
       },
     ],
     []
