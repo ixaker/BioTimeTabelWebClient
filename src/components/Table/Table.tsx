@@ -1,16 +1,15 @@
 import React from 'react';
 import { Column, useTable } from 'react-table';
-import './table.css'
-
+import './table.css';
 
 interface Data {
-  id: number; //id працівника
-  name: string; // ПІБ працівника
-  type: "d" | "n"; // тип зміни бути тільки "d" - денна або "n" - нічна
-  arrival: string; // прихід
-  departure: string; // ухід
-  duration: string; // тривалість зміни
-  total: string; // час, який зараховується
+  id: number;
+  name: string;
+  type: 'd' | 'n';
+  arrival: string;
+  departure: string;
+  duration: string;
+  total: string;
 }
 
 interface Props {
@@ -75,7 +74,7 @@ const Table: React.FC<Props> = ({ data }) => {
           return (
             <tr {...row.getRowProps()}>
               {row.cells.map(cell => (
-                <td {...cell.getCellProps()} className={cell.column.className}>{cell.render('Cell')}</td>
+                <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
               ))}
             </tr>
           );
