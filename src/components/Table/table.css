@@ -29,7 +29,7 @@
 
   .name-cell {
     text-align: left;
-    width: 40%;
+    width: 45%;
   }
 
   .type-cell {
@@ -37,15 +37,15 @@
   }
 
   .arrival-cell {
-    /* width: 12%; */
+    width: 15%;
   }
 
   .departure-cell {
-    /* width: 12%; */
+    width: 15%;
   }
 
   .duration-cell {
-    width: 20px;
+    width: 15%;
   }
 
   .total-cell {
