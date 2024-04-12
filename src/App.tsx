@@ -6,7 +6,7 @@ import WebSocket from './components/WebSocket/WebSocket'
 import { getCurrentDate, formatDate, increaseDate, decreaseDate } from './components/utils/dateUtils'
 import { useAppContext } from './State/AppProvider'
 import Modal from './components/Rodal/Modal'
-import MockComponent from './components/Mock'
+// import MockComponent from './components/Mock'
 
 function App() {
   const { state } = useAppContext();
@@ -31,7 +31,7 @@ function App() {
       <WebSocket 
         date={formatDate(date)}
       />
-      <MockComponent/>
+      {/* <MockComponent/> */}
       <Slider handleSliderClick={handleSliderClick} date={formatDate(date)}/>
       <Table data={state.data}/>
       <Modal/>
