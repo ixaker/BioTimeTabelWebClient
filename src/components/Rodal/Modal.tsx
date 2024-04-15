@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
 import { useAppContext } from '../../State/AppProvider';
-import errorSound from '../../assets/errorsound.mp3';
 import { ButtonOk, ButtonX } from './Buttons';
 import { sendTrueEvent, sendFalseEvent } from '../WebSocket/WebSocket';
 
@@ -14,7 +13,7 @@ const Modal: React.FC = () => {
   const { modal } = state;
   const { visible, data } = modal;
   const [showModal, setShowModal] = useState(false);
-  const audio = new Audio(errorSound);
+  
 
   useEffect(() => {
     if (visible) {
@@ -25,21 +24,12 @@ const Modal: React.FC = () => {
 
     } else {
       setShowModal(false);
-      audio.pause();
     }
   }, [visible, data]);
 
   useEffect(() => {
     setShowModal(visible);
   }, [visible]);
-
-  useEffect(() => {
-    if (visible && data.error) {
-      audio.volume = 0.5;
-      audio.loop = true;
-      audio.play();
-    }
-  }, [visible, data.error]);
 
   useEffect(() => {
     if (visible) {
