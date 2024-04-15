@@ -3,7 +3,6 @@
     width: 100%;
   }
 
-  
   .thead th {
     border: 1px solid black;
     padding: 5px 5px 5px 5px;
@@ -18,10 +17,28 @@
     padding: 5px;
   }
 
-  tr {
-    
+  tbody td:first-child {
+    text-align: left;
+    width: 45%;
   }
 
+  tbody td:nth-child(2) {
+    width: 10%; 
+  }
+
+  tbody td:nth-child(3) {
+    width: 15%; 
+  }
+
+  tbody td:nth-child(4) {
+    width: 15%; 
+  }
+
+  tbody td:nth-child(5) {
+    width: 15%; 
+  }
+
+  
   td {
     text-align: center;
     
@@ -48,6 +65,4 @@
     width: 15%;
   }
 
-  .total-cell {
-    /* width: 12%; */
-  }
+  

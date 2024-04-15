@@ -3,7 +3,10 @@ import { useState, useEffect } from 'react';
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
 import { useAppContext } from '../../State/AppProvider';
-import CloseButton from './closeButton';
+import errorSound from '../../assets/errorsound.mp3';
+import { ButtonOk, ButtonX } from './Buttons';
+import { sendTrueEvent, sendFalseEvent } from '../WebSocket/WebSocket';
+
 
 const Modal: React.FC = () => {
 
@@ -11,7 +14,7 @@ const Modal: React.FC = () => {
   const { modal } = state;
   const { visible, data } = modal;
   const [showModal, setShowModal] = useState(false);
-  console.log(data);
+  const audio = new Audio(errorSound);
 
   useEffect(() => {
     if (visible) {
@@ -22,9 +25,8 @@ const Modal: React.FC = () => {
 
     } else {
       setShowModal(false);
+      audio.pause();
     }
-
-
   }, [visible, data]);
 
   useEffect(() => {
@@ -32,10 +34,18 @@ const Modal: React.FC = () => {
   }, [visible]);
 
   useEffect(() => {
+    if (visible && data.error) {
+      audio.volume = 0.5;
+      audio.loop = true;
+      audio.play();
+    }
+  }, [visible, data.error]);
+
+  useEffect(() => {
     if (visible) {
       const timer = setTimeout(() => {
         onClose();
-      }, 60000);
+      }, 600000);
 
       return () => clearTimeout(timer);
     }
@@ -45,18 +55,22 @@ const Modal: React.FC = () => {
     dispatch({ type: 'SET_MODAL', payload: { visible: false, data: modal.data } });
   };
 
+
   let customStyles = {};
 
   if (data.error === true) {
     customStyles = {
-      border: "3px solid red",
+      border: "10px solid red",
+      backgroundColor: "#d6a4a4",
       borderRadius: "10px",
       padding: "10px",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
       width: '90%',
+      maxWidth: "600px",
       height: "200px",
+      animation: "blinkingBackground 0.3s infinite alternate",
     }
   } else {
     customStyles = {
@@ -67,6 +81,7 @@ const Modal: React.FC = () => {
       justifyContent: "center",
       alignItems: "center",
       width: '90%',
+      maxWidth: "600px",
       height: "200px",
     };
   }
@@ -75,7 +90,8 @@ const Modal: React.FC = () => {
     <Rodal
       visible={showModal}
       onClose={onClose}
-
+      leaveAnimation="zoom"
+      duration={300}
       closeOnEsc
       showCloseButton
       enterAnimation='zoom'
@@ -93,6 +109,11 @@ const Modal: React.FC = () => {
         borderRadius: "5px",
         padding: "10px",
         width: "95%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        
 
       }}>
         <div style={{
@@ -125,20 +146,31 @@ const Modal: React.FC = () => {
         >
           {data.msg}
         </p>
-        {/* <button onClick={
-          () => {
-            console.log("Button clicked!");
-            const newDataForModal = {
-              first_name: 'Другий модал',
-              time: 'asdf',
-              state: 'asdfasdf',
-              error: true,
-              msg: 'asdfsdf',
-            };
-            dispatch({ type: 'SET_MODAL', payload: { visible: true, data: newDataForModal } });
+        <div style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "500px",
+        }}
+        >
+          {data.error 
+            ? <>
+                <ButtonX onClick={()=> {
+                  sendFalseEvent(data)
+                  onClose()
+                }}/>
+                <ButtonOk onClick={()=> {
+                  sendTrueEvent(data)
+                  onClose()
+                }}/>
+              </>
+            : <ButtonOk onClick={()=> onClose()}/>
           }
-        }>Click me!</button> */}
-        <CloseButton />
+
+
+          
+        </div>
       </div>
     </Rodal>
   );

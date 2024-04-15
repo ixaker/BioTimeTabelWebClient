@@ -12,6 +12,8 @@ interface ServerToClientEvents {
   
 interface ClientToServerEvents {
     getList: (data: { date: string }) => void;
+    trueEvent: (data: dataType) => void;
+    falseEvent: (data: dataType) => void;
 }
 interface rowData {
     id: number;        
@@ -39,6 +41,8 @@ interface WebSocketProps {
     date: string;
 }
 
+let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
+
 const WebSocket: React.FC<WebSocketProps> = ({date}) => {
     
     const { notify } = useAppContext();
@@ -46,47 +50,78 @@ const WebSocket: React.FC<WebSocketProps> = ({date}) => {
     const memoizedDate = useMemo(() => date, [date]);
 
     useEffect(() => {
-        const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io('http://10.8.0.4:3000');
+        if (!socket) {    
+            socket = io('http://10.8.0.4:3000');
 
-        const handleUpdate = (data: rowData) => {
-            console.log('Update', data);
-            dispatch({ type: 'UPDATE_OR_ADD_DATA', payload: data });
-        };
+            const handleUpdate = (data: rowData) => {
+                console.log('Update', data);
+                dispatch({ type: 'UPDATE_OR_ADD_DATA', payload: data });
+            };
 
-        socket.on('connect', () => {
-            console.log('WebSocket connection established successfully');
+            socket.on('connect', () => {
+                console.log('WebSocket connection established successfully');
+                socket.emit('getList', { date } as { date: string });
+            });
+
+            socket.on('list', (data) => {
+                console.log('List', data);
+                dispatch({ type: 'REPLACE_ALL', payload: data });
+            });
+
+            socket.on('update', handleUpdate)
+
+            socket.on('notification', (data) => {
+                console.log('Notification', data);
+                notify(data);
+            });
+        
+            socket.on('disconnect', () => {
+                console.log('WebSocket disconnected');
+            });
+
             socket.emit('getList', { date } as { date: string });
-        });
 
-        socket.on('list', (data) => {
-            console.log('List', data);
-            dispatch({ type: 'REPLACE_ALL', payload: data });
-        });
+            socket.on('error', (error: Error) => {
+                console.error('WebSocket connection error:', error);
+                
+            });
+        }
+            return () => {
+            socket.disconnect();
+            };
+    }, []);
 
-        socket.on('update', handleUpdate)
-
-        socket.on('notification', (data) => {
-            console.log('Notification', data);
-            notify(data);
-        });
-    
-        socket.on('disconnect', () => {
-            console.log('WebSocket disconnected');
-        });
-
-        socket.emit('getList', { date } as { date: string });
-
-        socket.on('error', (error: Error) => {
-            console.error('WebSocket connection error:', error);
+    useEffect(() => {
+        if (socket && socket.connected) {
+            socket.emit('getList', { date } as { date: string });
+            console.log('socket getlist');
             
-        });
-
-        return () => {
-        socket.disconnect();
-        };
+        }
     }, [memoizedDate]);
 
     return null;
     };
 
-    export default WebSocket;
+export default WebSocket;
+
+export const sendTrueEvent = (data: dataType) => {
+    console.log('sendTrueEvent');
+    console.log(data);
+    if (socket && socket.connected) {
+        socket.emit('trueEvent', data);
+        console.log('повідомлення відправлено');
+    } else {
+        console.error('Socket is not connected');
+    }
+  };
+
+  export const sendFalseEvent = (data: dataType) => {
+    console.log('sendFalseEvent');
+    console.log(data);
+    if (socket && socket.connected) {
+        socket.emit('falseEvent', data);
+        console.log('повідомлення відправлено');
+    } else {
+        console.error('Socket is not connected');
+    }
+  };

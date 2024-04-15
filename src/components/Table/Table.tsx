@@ -74,7 +74,7 @@ const Table: React.FC<Props> = ({ data }) => {
           return (
             <tr {...row.getRowProps()}>
               {row.cells.map(cell => (
-                <td {...cell.getCellProps()} className={cell.column.className}>{cell.render('Cell')}</td>
+                <td {...cell.getCellProps()} >{cell.render('Cell')}</td>
               ))}
             </tr>
           );

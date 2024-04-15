@@ -21,3 +21,13 @@
 .rodal-close.rodal-close-btn {
   color: red;
 }
+
+@keyframes blinkingBackground {
+  0% {
+    background-color: #ee9898; /* Початковий колір фону */
+  }
+  
+  100% {
+    background-color: #ffffff; /* Повернення до початкового колору */
+  }
+}
