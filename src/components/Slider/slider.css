@@ -5,15 +5,25 @@
     flex-direction: row;
     width: 100%;
     padding: 5px;
-    border: 1px solid rgb(189, 189, 189);
+    /* border: 1px solid rgb(189, 189, 189); */
     margin: 0 auto;
 }
 
-.slider-input {
-    font-size: 3.5rem;
-    text-align: center;
-    margin: 0 15px;
+.slider-input-container {
+    background-color: white;
+    border: 1px solid black;
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     
+}
+
+.slider-input {
+    font-size: 2.5rem;
+    align-items: center;
+    margin-bottom: 4px;
+
 }
 
 .slider-arrows {

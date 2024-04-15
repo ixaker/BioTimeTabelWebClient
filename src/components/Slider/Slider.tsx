@@ -32,7 +32,7 @@ const Slider: React.FC<SliderProps>= ({ handleSliderClick, date }) => {
             <div className={`arrows-container ${isLeftArrowActive ? 'clicked' : ''}`}>
                 <i className="bi bi-arrow-left-circle btnArrow slider-arrows" onClick={handleLeftArrowClick}></i>
             </div>
-            <div>
+            <div className='slider-input-container'>
                 <span className="date-input slider-input">{date}</span>
             </div>
             <div className={`arrows-container ${isRightArrowActive ? 'clicked' : ''}`}>

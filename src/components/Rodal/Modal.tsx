@@ -51,7 +51,7 @@ const Modal: React.FC = () => {
   if (data.error === true) {
     customStyles = {
       border: "10px solid red",
-      backgroundColor: "#d6a4a4",
+      backgroundColor: "white",
       borderRadius: "10px",
       padding: "10px",
       display: "flex",

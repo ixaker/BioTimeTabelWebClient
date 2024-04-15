@@ -7,7 +7,7 @@
 th, td {
   overflow: hidden;  
   text-overflow: ellipsis;
-  border: 1px solid rgb(202, 202, 202);
+  
 }
 
 th {
@@ -18,7 +18,7 @@ th {
 }
 
 .thead th {
-  border: 1px solid rgb(189, 189, 189);
+  border: 1px solid rgb(0, 0, 0);
   padding: 5px 5px 5px 5px;
   background: #007431;
   color: white;
@@ -31,6 +31,7 @@ th {
 .tbody td {
   border: 1px solid rgb(189, 189, 189);
   padding: 3px;
+  background-color: white;
 }
 
 tbody td:first-child {

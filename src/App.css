@@ -24,11 +24,11 @@
 
 @keyframes blinkingBackground {
   0% {
-    background-color: #ee9898; /* Початковий колір фону */
+    border-color: #ff0000; /* Початковий колір фону */
   }
   
   100% {
-    background-color: #ffffff; /* Повернення до початкового колору */
+    border-color: #f8afaf; /* Повернення до початкового колору */
   }
 }
 
