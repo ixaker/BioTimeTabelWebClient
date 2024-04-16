@@ -4,66 +4,55 @@
   font-size: 2rem;
 }
 
-th, td {
-  overflow: hidden;  
-  text-overflow: ellipsis;
-  
-}
-
-th {
-  background-color: darkgreen;
-  color: white;
-  border: 1px solid white;
-  text-align: center;
-}
-
 .thead th {
   border: 1px solid rgb(0, 0, 0);
   padding: 5px 5px 5px 5px;
   background: #007431;
   color: white;
   font-size: 2rem;
+}
+
+.thead th {
+  text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  max-width: 60px;
 }
-  
+
 .tbody td {
   border: 1px solid rgb(189, 189, 189);
   padding: 3px;
   background-color: white;
 }
 
-tbody td:first-child {
+td:first-child {
   text-align: left;
-  width: 45%;
+  width: 47%;
   padding-left: 7px;
 }
 
-tbody td:nth-child(2) {
-  width: 10%; 
+td:nth-child(2) {
+  width: 8%;
 }
 
-  tbody td:nth-child(3) {
-    width: 15%; 
-  }
+td:nth-child(3) {
+  width: 15%;
+}
 
-  tbody td:nth-child(4) {
-    width: 15%; 
-  }
+td:nth-child(4) {
+  width: 15%;
+}
 
-  tbody td:nth-child(5) {
-    width: 15%; 
-  }
+td:nth-child(5) {
+  width: 15%;
+}
 
-  
-
-  td {
-    text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 60px;
-  }
-
-  
+td,
+th {
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 60px;
+}

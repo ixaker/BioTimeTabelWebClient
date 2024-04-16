@@ -1,12 +1,12 @@
+
 type Data = {
     id: number;        
-    emp_code: number;  
     name: string;      
     type: "d" | "n";   
     arrival: string;   
     departure: string; 
     duration: string;  
-    total: string;     
+    total: string;      
 }
 
 interface dataType {
@@ -14,6 +14,7 @@ interface dataType {
     time: string;
     state: string;
     error: boolean;
+    errorType: 'null_Uhod' | 'Uhod_Uhod' | 'Prihod_Prihod';
     msg: string;
   }
 
@@ -53,20 +54,14 @@ const reducer = (state: AppState, action: Action): AppState => {
         case 'REPLACE_ALL':
             console.log('rudeucer REPLACE_ALL');
             sortedData = action.payload.slice().sort((a, b) => {
-                // Спочатку сортуємо за типом (додаткове поле для забезпечення порядку)
                 if (a.type !== b.type) {
                     return a.type.localeCompare(b.type);
                 }
-                // Якщо типи однакові, сортуємо за іменем
                 return a.name.localeCompare(b.name);
             });
             return { ...state, data: sortedData };
         case 'UPDATE_OR_ADD_DATA':
         index = state.data.findIndex(item => {
-            // console.group('Comparing item.id and action.payload.id');
-            // console.log('item.id:', item.id);
-            // console.log('action.payload.id:', action.payload.id);
-            // console.groupEnd();
             return item.id === action.payload.id;
         });
     

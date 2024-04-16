@@ -1,14 +1,18 @@
 import { useEffect, useMemo } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useAppContext } from '../../State/AppProvider';
+import { transformData } from '../../utils/utils';
 interface ServerToClientEvents {
     connect: () => void;
     disconnect: () => void;
     error: (error: Error) => void;
-    list: (data: rowData[]) => void;
+    list: (data: ArrayOfArraysItem[]) => void;
     update: (data: rowData) => void;
     notification: (data: dataType) => void;
 }
+
+type ArrayOfArraysItem = [number, string, 'd' | 'n', string, string, string, string];
+
   
 interface ClientToServerEvents {
     getList: (data: { date: string }) => void;
@@ -34,6 +38,7 @@ interface dataType {
     time: string;
     state: string;
     error: boolean;
+    errorType: 'null_Uhod' | 'Uhod_Uhod' | 'Prihod_Prihod';
     msg: string;
   }
 
@@ -65,7 +70,8 @@ const WebSocket: React.FC<WebSocketProps> = ({date}) => {
 
             socket.on('list', (data) => {
                 console.log('List', data);
-                dispatch({ type: 'REPLACE_ALL', payload: data });
+                const transformedData = transformData(data);
+                dispatch({ type: 'REPLACE_ALL', payload: transformedData });
             });
 
             socket.on('update', handleUpdate)

@@ -7,6 +7,7 @@ interface dataType {
   time: string;
   state: string;
   error: boolean;
+  errorType: 'null_Uhod' | 'Uhod_Uhod' | 'Prihod_Prihod';
   msg: string;
 }
 
@@ -19,6 +20,7 @@ const initialState: AppState = {
         time: "",
         state: "",
         error: false,
+        errorType: "null_Uhod",
         msg: ""
       },
     },
@@ -53,7 +55,6 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     
     const notify = (data: dataType) => {
       console.log('notify start');
-      
       dispatch({
         type: 'SET_MODAL',
         payload: {

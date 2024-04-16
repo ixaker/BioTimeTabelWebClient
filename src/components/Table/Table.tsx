@@ -25,7 +25,7 @@ const Table: React.FC<Props> = ({ data }) => {
         className: 'name-cell',
       },
       {
-        Header: 'Д/H',
+        Header: 'З',
         accessor: 'type',
         Cell: ({ value }: { value: string }) => (value === 'd' ? 'Д' : 'Н'),
         className: 'type-cell',
