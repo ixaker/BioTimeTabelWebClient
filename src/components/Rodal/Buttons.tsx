@@ -72,7 +72,7 @@ const buttonBaseStyle = {
   border: '2px solid',
   borderRadius: '5px',
   padding: '5px',
-  fontSize: '1.2rem',
+  fontSize: '3vw',
   lineHeight: '1.25rem',
   color: 'white',
   cursor: 'pointer',
@@ -80,7 +80,7 @@ const buttonBaseStyle = {
   alignItems: 'center',
   justifyContent: 'center',
   margin: "20px 10px 20px 10px",
-  width: '250px',
+  width: '45%',
   height: '50px',
 };
 

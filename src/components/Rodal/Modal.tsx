@@ -4,18 +4,18 @@ import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
 import { useAppContext } from '../../State/AppProvider';
 import { ButtonOk, ButtonX, ButtonAccept } from './Buttons';
-import { sendTrueEvent, sendFalseEvent } from '../WebSocket/WebSocket';
-import messageData from './messageTexts.json'
+import { sendFalseEvent } from '../WebSocket/WebSocket';
+import { messageData } from './messageTexts'
 import { CSSProperties } from 'react';
 
 type messageText = {
-  "null_Uhod": {
+  0: {
       message: string;
   };
-  "Uhod_Uhod": {
+  1: {
       message: string;
   };
-  "Prihod_Prihod": {
+  2: {
       message: string;
   };
 }
@@ -50,19 +50,17 @@ const Modal: React.FC = () => {
     }
   }, [visible, data]);
 
-  useEffect(() => {
-    setShowModal(visible);
-  }, [visible]);
+  
 
   useEffect(() => {
     if (visible) {
       const timer = setTimeout(() => {
         onClose();
-      }, 600000);
+      }, 15000);
 
       return () => clearTimeout(timer);
     }
-  }, [visible]);
+  }, [visible, data]);
 
   const onClose = () => {
     dispatch({ type: 'SET_MODAL', payload: { visible: false, data: modal.data } });
@@ -76,16 +74,15 @@ const Modal: React.FC = () => {
     justifyContent: "center",
     alignItems: "center",
     width: '90%',
-    
     maxWidth: "700px",
-    bagroundColor: "white",
+    backgroundColor: "white",
   };
   
   const customStyles: CSSProperties = {
     ...commonStyles,
     border: data.error ? "10px solid red" : "3px solid green",
     animation: data.error ? "blinkingBackground 0.3s infinite alternate" : undefined, // При потребі вказати інше значення для animation
-    height: data.error ? "300px" : "200px",
+    height: data.error ? "420px" : "300px",
   };
 
   return (
@@ -123,7 +120,7 @@ const Modal: React.FC = () => {
                   onClose()
                 }}/>
                 <ButtonAccept onClick={()=> {
-                  sendTrueEvent(data)
+                  // sendTrueEvent(data)
                   onClose()
                 }}/>
               </>
@@ -149,10 +146,11 @@ const modalContainer: CSSProperties = {
 }
 
 const titleStyles: CSSProperties = {
+  marginTop: "20px",
   margin: "10px",
   fontWeight: "bold",
   marginRight: "0px",
-  fontSize: "30px",
+  fontSize: "3.5em",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -160,20 +158,22 @@ const titleStyles: CSSProperties = {
 
 const nameStyles: CSSProperties = {
   margin: 0,
-  marginBottom: "5px",
-  fontSize: "30px",
+  marginBottom: "10px",
+  fontSize: "3.5em",
+  fontWeight: "600",
 }
 
 const messageStyles: CSSProperties = {
     color: "rgb(141, 4, 4)",
-    fontSize: "1.5em",
-    fontWeight: "bold",
+    fontSize: "1.8em",
+    fontWeight: "500",
+    marginBottom: "10px",
   }
 
 const buttonsContainer: CSSProperties = {
   display: "flex",
   flexDirection: "row",
-  justifyContent: "space-between",
+  justifyContent: "space-around",
   alignItems: "center",
   width: "100%",
   

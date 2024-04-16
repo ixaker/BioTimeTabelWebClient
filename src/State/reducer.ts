@@ -8,13 +8,17 @@ type Data = {
     duration: string;  
     total: string;      
 }
-
+enum errorType {
+    null_Uhod,
+    Uhod_Uhod,
+    Prihod_Prihod
+  }
 interface dataType {
     first_name: string;
     time: string;
     state: string;
     error: boolean;
-    errorType: 'null_Uhod' | 'Uhod_Uhod' | 'Prihod_Prihod';
+    errorType: errorType;
     msg: string;
   }
 
@@ -50,10 +54,12 @@ const reducer = (state: AppState, action: Action): AppState => {
     let index;
     let sortedData: Data[] = [];
     let updatedData: Data[] = [];
+    let filteredData: Data[] = [];
     switch (action.type) {
         case 'REPLACE_ALL':
             console.log('rudeucer REPLACE_ALL');
-            sortedData = action.payload.slice().sort((a, b) => {
+            filteredData = action.payload.filter(item => item.name !== null);
+            sortedData = filteredData.slice().sort((a, b) => {
                 if (a.type !== b.type) {
                     return a.type.localeCompare(b.type);
                 }
@@ -64,6 +70,10 @@ const reducer = (state: AppState, action: Action): AppState => {
         index = state.data.findIndex(item => {
             return item.id === action.payload.id;
         });
+
+        if (action.payload.name === null) {
+            action.payload.name = '';
+        }
     
             if (index !== -1) {
                 console.log('reducer UPDATE');

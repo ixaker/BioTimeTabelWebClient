@@ -2,6 +2,7 @@ import React from 'react';
 import { Column, useTable } from 'react-table';
 import './table.css';
 
+
 interface Data {
   id: number;
   name: string;
@@ -12,12 +13,16 @@ interface Data {
   total: string;
 }
 
+type CustomColumn<Data extends object = object> = Column<Data> & {
+  className?: string;
+};
+
 interface Props {
   data: Data[];
 }
 
 const Table: React.FC<Props> = ({ data }) => {
-  const columns: Column<Data>[] = React.useMemo(
+  const columns: CustomColumn<Data>[] = React.useMemo(
     () => [
       {
         Header: 'Співробітник',
@@ -74,7 +79,7 @@ const Table: React.FC<Props> = ({ data }) => {
           return (
             <tr {...row.getRowProps()}>
               {row.cells.map(cell => (
-                <td {...cell.getCellProps()} >{cell.render('Cell')}</td>
+                <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
               ))}
             </tr>
           );
@@ -85,3 +90,4 @@ const Table: React.FC<Props> = ({ data }) => {
 };
 
 export default Table;
+

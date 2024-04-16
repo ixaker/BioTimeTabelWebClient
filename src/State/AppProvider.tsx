@@ -2,12 +2,18 @@
 import React, { createContext, useContext, useReducer } from 'react';
 import reducer, { AppState, Action } from './reducer';
 
+enum errorType {
+  null_Uhod,
+  Uhod_Uhod,
+  Prihod_Prihod
+}
+
 interface dataType {
   first_name: string;
   time: string;
   state: string;
   error: boolean;
-  errorType: 'null_Uhod' | 'Uhod_Uhod' | 'Prihod_Prihod';
+  errorType: errorType;
   msg: string;
 }
 
@@ -20,7 +26,7 @@ const initialState: AppState = {
         time: "",
         state: "",
         error: false,
-        errorType: "null_Uhod",
+        errorType: errorType.null_Uhod,
         msg: ""
       },
     },
@@ -55,6 +61,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     
     const notify = (data: dataType) => {
       console.log('notify start');
+      console.log(data);
+      
       dispatch({
         type: 'SET_MODAL',
         payload: {

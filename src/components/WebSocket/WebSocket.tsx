@@ -12,15 +12,20 @@ interface ServerToClientEvents {
 }
 
 type ArrayOfArraysItem = [number, string, 'd' | 'n', string, string, string, string];
-
-  
 interface ClientToServerEvents {
     getList: (data: { date: string }) => void;
     trueEvent: (data: dataType) => void;
     falseEvent: (data: dataType) => void;
 }
+enum errorType {
+    null_Uhod,
+    Uhod_Uhod,
+    Prihod_Prihod
+}
+
 interface rowData {
     id: number;        
+    errorType: errorType;
     emp_code: number;  
     name: string;      
     type: "d" | "n";   
@@ -38,23 +43,27 @@ interface dataType {
     time: string;
     state: string;
     error: boolean;
-    errorType: 'null_Uhod' | 'Uhod_Uhod' | 'Prihod_Prihod';
+    errorType: errorType;
     msg: string;
   }
 
 interface WebSocketProps {
     date: string;
+    onSocketDisconnected: () => void;
+    onSocketConnected: () => void;
 }
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
-const WebSocket: React.FC<WebSocketProps> = ({date}) => {
+const WebSocket: React.FC<WebSocketProps> = ({date, onSocketDisconnected, onSocketConnected}) => {
     
-    const { notify } = useAppContext();
-    const { dispatch } = useAppContext();
+    const { notify, dispatch } = useAppContext();
     const memoizedDate = useMemo(() => date, [date]);
-
+    console.log('websocket start');
+    
     useEffect(() => {
+        console.log(socket);
+        
         if (!socket) {    
             socket = io('http://10.8.0.4:3000');
 
@@ -65,11 +74,12 @@ const WebSocket: React.FC<WebSocketProps> = ({date}) => {
 
             socket.on('connect', () => {
                 console.log('WebSocket connection established successfully');
-                socket.emit('getList', { date } as { date: string });
+                socket.emit('getList', { date, terminal_sns: ['CN99212360023', 'CN99212360024'] } as { date: string });
+                onSocketConnected()
             });
 
             socket.on('list', (data) => {
-                console.log('List', data);
+                // console.log('List', data);
                 const transformedData = transformData(data);
                 dispatch({ type: 'REPLACE_ALL', payload: transformedData });
             });
@@ -83,6 +93,7 @@ const WebSocket: React.FC<WebSocketProps> = ({date}) => {
         
             socket.on('disconnect', () => {
                 console.log('WebSocket disconnected');
+                onSocketDisconnected();
             });
 
             socket.emit('getList', { date } as { date: string });
@@ -101,7 +112,8 @@ const WebSocket: React.FC<WebSocketProps> = ({date}) => {
         if (socket && socket.connected) {
             socket.emit('getList', { date } as { date: string });
             console.log('socket getlist');
-            
+        } else {
+            console.error('Socket is not connected');
         }
     }, [memoizedDate]);
 
@@ -115,7 +127,7 @@ export const sendTrueEvent = (data: dataType) => {
     console.log(data);
     if (socket && socket.connected) {
         socket.emit('trueEvent', data);
-        console.log('повідомлення відправлено');
+        console.log('повідомлення TrueEvent відправлено');
     } else {
         console.error('Socket is not connected');
     }

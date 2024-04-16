@@ -1,15 +1,15 @@
 {
-  "name": "Табель",
-  "short_name": "Табель",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
+"name":"Табель",
+  "short_name":"Табель",
+  "description":"Табель",
+  "start_url": "./tabel", 
+  "background_color":"#343a40",
+  "theme_color":"#343a40",
+  "display":"standalone",
+  "orientation": "any",
   "icons": [
-    {
-      "src": "/icon.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    }
-  ]
+    {"src":"/icon_64.png.png","sizes":"64x64","type":"image/png"}
+  ],
+  "autoload_enabled": true
 }
+
