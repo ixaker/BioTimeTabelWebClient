@@ -33,6 +33,7 @@ const Modal: React.FC = () => {
   const { visible, data } = modal;
   const [showModal, setShowModal] = useState(false);
   const [messageText, setMessageText] = useState<MessageText>({} as MessageText);
+  const [remainingTime, setRemainingTime] = useState(60);
   
   useEffect(() => {
     setMessageText(messageData);
@@ -43,6 +44,7 @@ const Modal: React.FC = () => {
       setShowModal(false);
       setTimeout(() => {
         setShowModal(true);
+        setRemainingTime(60);
       }, 200);
 
     } else {
@@ -50,13 +52,21 @@ const Modal: React.FC = () => {
     }
   }, [visible, data]);
 
+  useEffect(() => {
+    if (visible) {
+      const timer = setInterval(() => {
+        setRemainingTime(prevTime => prevTime - 1);
+      }, 1000);
   
+      return () => clearInterval(timer);
+    }
+  }, [visible, data]);  
 
   useEffect(() => {
     if (visible) {
       const timer = setTimeout(() => {
         onClose();
-      }, 15000);
+      }, 600000);
 
       return () => clearTimeout(timer);
     }
@@ -76,13 +86,14 @@ const Modal: React.FC = () => {
     width: '90%',
     maxWidth: "700px",
     backgroundColor: "white",
+    height: "fit-content",
   };
   
   const customStyles: CSSProperties = {
     ...commonStyles,
-    border: data.error ? "10px solid red" : "3px solid green",
+    border: data.error ? "10px solid red" : "10px solid green",
     animation: data.error ? "blinkingBackground 0.3s infinite alternate" : undefined, // При потребі вказати інше значення для animation
-    height: data.error ? "420px" : "300px",
+    
   };
 
   return (
@@ -127,6 +138,9 @@ const Modal: React.FC = () => {
             : <ButtonOk onClick={()=> onClose()}/>
           }
         </div>
+        <div style={timerContainer}>
+        Час до закриття: {remainingTime} сек.
+        </div>
       </div>
     </Rodal>
   );
@@ -150,7 +164,7 @@ const titleStyles: CSSProperties = {
   margin: "10px",
   fontWeight: "bold",
   marginRight: "0px",
-  fontSize: "3.5em",
+  fontSize: "3.2em",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -159,7 +173,7 @@ const titleStyles: CSSProperties = {
 const nameStyles: CSSProperties = {
   margin: 0,
   marginBottom: "10px",
-  fontSize: "3.5em",
+  fontSize: "3.2em",
   fontWeight: "600",
 }
 
@@ -179,3 +193,10 @@ const buttonsContainer: CSSProperties = {
   
 }
 
+const timerContainer: CSSProperties = {
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "center",
+  alignItems: "center",
+  width: "100%",
+}

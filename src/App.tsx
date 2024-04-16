@@ -12,7 +12,7 @@ import LoaderDisconect from './components/Loader/LoaderDisconect'
 function App() {
   const { state } = useAppContext();
   const [date, setDate] = useState(getCurrentDate());
-  const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const [isDataLoaded, setIsDataLoaded] = useState(true);
   const [isSocketDisconnect, setIsSocketDisconnect] = useState(false);
   const memoizedState = useMemo(() => ({ date, isDataLoaded }), [date, isDataLoaded]);
 

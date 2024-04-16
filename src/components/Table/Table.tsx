@@ -36,7 +36,7 @@ const Table: React.FC<Props> = ({ data }) => {
         className: 'type-cell',
       },
       {
-        Header: 'Прихід',
+        Header: 'Прих.',
         accessor: 'arrival',
         className: 'arrival-cell',
       },
@@ -48,6 +48,11 @@ const Table: React.FC<Props> = ({ data }) => {
       {
         Header: 'Трив.',
         accessor: 'duration',
+        className: 'duration-cell',
+      },
+      {
+        Header: 'Всього.',
+        accessor: 'total',
         className: 'duration-cell',
       },
     ],
