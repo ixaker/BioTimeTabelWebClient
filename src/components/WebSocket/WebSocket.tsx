@@ -2,6 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useAppContext } from '../../State/AppProvider';
 import { transformData } from '../../utils/utils';
+import { formatDate, parseDateString } from '../utils/dateUtils';
 interface ServerToClientEvents {
     connect: () => void;
     disconnect: () => void;
@@ -45,17 +46,30 @@ interface dataType {
     error: boolean;
     errorType: errorType;
     msg: string;
+    newEvent: newEventType;
   }
+
+interface newEventType {
+    id: number;
+    emp_code: string;
+    punch_time: Date;
+    punch_state: "0" | "1";
+    first_name: string;
+    day: string;
+    terminal_sn: string;
+}
+
 
 interface WebSocketProps {
     date: string;
     onSocketDisconnected: () => void;
     onSocketConnected: () => void;
+    setDate: (date: Date) => void;
 }
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
-const WebSocket: React.FC<WebSocketProps> = ({date, onSocketDisconnected, onSocketConnected}) => {
+const WebSocket: React.FC<WebSocketProps> = ({date, onSocketDisconnected, onSocketConnected, setDate}) => {
     
     const { notify, dispatch } = useAppContext();
     const memoizedDate = useMemo(() => date, [date]);
@@ -88,6 +102,12 @@ const WebSocket: React.FC<WebSocketProps> = ({date, onSocketDisconnected, onSock
 
             socket.on('notification', (data) => {
                 console.log('Notification', data);
+                
+                const parseDate = parseDateString(data.newEvent.day);
+                const formatedParseDate = formatDate(parseDate);
+                console.log('parseDate', parseDate);
+                console.log('formatedParseDate', formatedParseDate);
+                setDate(parseDate)
                 notify(data);
             });
         

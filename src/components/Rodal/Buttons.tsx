@@ -1,6 +1,10 @@
+import CircularProgressTimer from "../Loader/CircleProgres";
 interface ButtonProps {
   onClick: () => void;
   buttonText?: string;
+  time: number;
+  remainingTime: number;
+  progress: boolean;
 }
 
 export const ButtonX: React.FC<ButtonProps> = ({onClick, buttonText}) => {
@@ -37,18 +41,21 @@ export const ButtonOk: React.FC<ButtonProps> = ({onClick, buttonText}) => {
   )
 }
 
-export const ButtonAccept: React.FC<ButtonProps> = ({onClick, buttonText}) => {
+export const ButtonAccept: React.FC<ButtonProps> = ({onClick, buttonText, time, remainingTime, progress}) => {
   return (
     <button 
       style={buttonOkStyle}
       onClick={onClick}
     >
         <div>{buttonText}</div>
-        <svg 
-          style={svgXStyle} stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="200px" width="200px" xmlns="http://www.w3.org/2000/svg">
-          <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"></path>
-
-        </svg>
+        {progress
+          ? <CircularProgressTimer time={time} remainingTime={remainingTime} />
+          : <svg 
+              style={svgXStyle} stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="200px" width="200px" xmlns="http://www.w3.org/2000/svg">
+              <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"></path>
+            </svg>
+        }
+        
     </button>
   )
 }
@@ -72,17 +79,17 @@ const svgXStyle = {
 const buttonBaseStyle = {
   border: '2px solid',
   borderRadius: '5px',
-  padding: '5px',
-  fontSize: '1.25rem',
-  lineHeight: '1.25rem',
+  padding: '10px',
+  fontSize: '1.3rem',
+  lineHeight: '1.3rem',
   color: 'white',
   cursor: 'pointer',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  margin: "20px 10px 20px 10px",
+  margin: "20px 0px 20px 0px",
   width: '45%',
-  height: '50px',
+  height: '60px',
 };
 
 const buttonXStyle = {
@@ -94,8 +101,8 @@ const buttonXStyle = {
 
 const buttonOkStyle = {
   ...buttonBaseStyle, 
-  border: '2px solid green',
-  backgroundColor: 'green',
+  border: '2px solid #1f7a1f',
+  backgroundColor: '#1f7a1f',
 };
 
 

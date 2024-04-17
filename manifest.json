@@ -8,7 +8,7 @@
   "display":"standalone",
   "orientation": "any",
   "icons": [
-    {"src":"/icon_64.png.png","sizes":"64x64","type":"image/png"}
+    {"src":"/icon_64.png","sizes":"64x64","type":"image/png"}
   ],
   "autoload_enabled": true
 }

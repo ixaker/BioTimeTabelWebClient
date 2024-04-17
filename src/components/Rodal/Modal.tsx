@@ -8,6 +8,8 @@ import { sendTrueEvent,sendFalseEvent } from '../WebSocket/WebSocket';
 import { messageText } from './messageTexts'
 import { CSSProperties } from 'react';
 
+
+
 const Modal: React.FC = () => {
 
   const { state, dispatch } = useAppContext();
@@ -15,42 +17,48 @@ const Modal: React.FC = () => {
   const { visible, data } = modal;
   const [showModal, setShowModal] = useState(false);
   const [remainingTime, setRemainingTime] = useState(60);
-  
+  const time: number = 60;
+
   useEffect(() => {
     let timer: NodeJS.Timeout;
-    let closeTimer: NodeJS.Timeout;
+    
     if (visible) {
       setShowModal(false);
       setTimeout(() => {
         setShowModal(true);
-        setRemainingTime(60);
+        setRemainingTime(time);
       }, 200);
 
       timer = setInterval(() => {
         setRemainingTime(prevTime => prevTime - 1);
       }, 1000);
-
-      closeTimer = setTimeout(() => {
-        onClose();
-      }, 600000);
+      
     } else {
       setShowModal(false);
     }
 
     return () => {
+      console.log('clearInterval(timer)');
+      
       clearInterval(timer);
-      clearTimeout(closeTimer);
     };
-
   }, [visible, data]);
 
+  
 
   const onClose = () => {
     console.log('onClose start');
-    
     console.log({ visible: false, data: modal.data });
     dispatch({ type: 'SET_MODAL', payload: { visible: false, data: modal.data } });
   };
+
+  useEffect(() => {
+    if (remainingTime === 0 && visible) {
+      console.log('remainingTime === 0');
+      setRemainingTime(60);
+      onClose();
+    }
+  }, [remainingTime, visible]);
 
   const commonStyles: CSSProperties = {
     borderRadius: "10px",
@@ -108,6 +116,9 @@ const Modal: React.FC = () => {
                     onClose()
                   }}
                   buttonText={messageText[data.errorType]?.noText}
+                  time={60}
+                  remainingTime={remainingTime}
+                  progress={false}
                 />
                 <ButtonAccept 
                   onClick={()=> {
@@ -115,16 +126,22 @@ const Modal: React.FC = () => {
                     onClose()
                   }}
                   buttonText={messageText[data.errorType]?.yesText}
+                  time={60}
+                  remainingTime={remainingTime}
+                  progress={data.errorType === 1 || data.errorType === 0}
                 />
               </>
             : <ButtonOk 
                 onClick={()=> onClose()}
-                buttonText=""
+                buttonText="підтвердити"
+                time={60}
+                remainingTime={remainingTime}
+                progress={false}
               />
           }
         </div>
         <div style={timerContainer}>
-        Час до закриття: {remainingTime} сек.
+        {/* Час до закриття: {remainingTime} сек. */}
         </div>
       </div>
     </Rodal>
@@ -137,7 +154,7 @@ const modalContainer: CSSProperties = {
   border: "0px solid #ccc",
   borderRadius: "5px",
   padding: "10px",
-  width: "95%",
+  width: "100%",
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
@@ -164,7 +181,7 @@ const nameStyles: CSSProperties = {
 
 const messageStyles: CSSProperties = {
     color: "rgb(141, 4, 4)",
-    fontSize: "1.8em",
+    fontSize: "2.2em",
     fontWeight: "500",
     marginBottom: "10px",
   }

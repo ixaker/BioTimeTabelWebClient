@@ -8,6 +8,7 @@ import { useAppContext } from './State/AppProvider'
 import Modal from './components/Rodal/Modal'
 import Loader from './components/Loader/Loader'
 import LoaderDisconect from './components/Loader/LoaderDisconect'
+// import ScreenWakeLock from './components/WakeLock/WakeLock'
 
 function App() {
   const { state } = useAppContext();
@@ -35,6 +36,8 @@ function App() {
   };
 
   const memoizedDate = useMemo(() => date, [date]);
+  console.log(memoizedDate);
+  
 
   return (
     <>
@@ -42,7 +45,9 @@ function App() {
         date={formatDate(memoizedDate)}
         onSocketDisconnected={() => setIsSocketDisconnect(true)}
         onSocketConnected={() => setIsSocketDisconnect(false)}
+        setDate={setDate}
       />
+      {/* <ScreenWakeLock/> */}
       {memoizedState.isDataLoaded 
       ? <>
           <Slider handleSliderClick={handleSliderClick} date={formatDate(memoizedState.date)}/>

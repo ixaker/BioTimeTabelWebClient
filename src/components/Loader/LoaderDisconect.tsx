@@ -10,6 +10,7 @@ export default function LoaderDisconect() {
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.3)',
+        borderRadius: '30px',
         zIndex: 9999,
         
     }}>

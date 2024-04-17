@@ -2,6 +2,8 @@ export const getCurrentDate = (): Date => {
   return new Date();
 };
 export const formatDate = (date: Date): string => {
+  console.log(date);
+  
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const year = String(date.getFullYear());
@@ -18,4 +20,13 @@ export const decreaseDate = (date: Date): Date => {
   const newDate = new Date(date);
   newDate.setDate(newDate.getDate() - 1);
   return newDate;
+};
+
+export const parseDateString = (dateString: string): Date => {
+  console.log(dateString);
+  const [day, month, year] = dateString.split('.').map(Number);
+  console.log(year, month, day);
+  
+  console.log(new Date(year, month - 1, day));
+  return new Date(year, month - 1, day);
 };
