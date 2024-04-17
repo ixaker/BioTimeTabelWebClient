@@ -5,26 +5,12 @@ import 'rodal/lib/rodal.css';
 import { useAppContext } from '../../State/AppProvider';
 import { ButtonOk, ButtonX, ButtonAccept } from './Buttons';
 import { sendFalseEvent } from '../WebSocket/WebSocket';
-import { messageData } from './messageTexts'
+import { messageText } from './messageTexts'
 import { CSSProperties } from 'react';
 
-type messageText = {
-  0: {
-      message: string;
-  };
-  1: {
-      message: string;
-  };
-  2: {
-      message: string;
-  };
-}
 
-type MessageText = {
-  [key in keyof messageText]: {
-    message: string;
-  };
-};
+
+
 
 const Modal: React.FC = () => {
 
@@ -32,13 +18,8 @@ const Modal: React.FC = () => {
   const { modal } = state;
   const { visible, data } = modal;
   const [showModal, setShowModal] = useState(false);
-  const [messageText, setMessageText] = useState<MessageText>({} as MessageText);
   const [remainingTime, setRemainingTime] = useState(60);
   
-  useEffect(() => {
-    setMessageText(messageData);
-  },[])
-
   useEffect(() => {
     if (visible) {
       setShowModal(false);

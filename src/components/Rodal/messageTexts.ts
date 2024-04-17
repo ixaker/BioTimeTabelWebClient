@@ -1,4 +1,4 @@
-export const messageData = {
+export const messageText = {
     0: {
         message: 'Ви натиснули "Ухід", але не було ніякої минулої дії. Це випадкове натискання чи правильна дія? ',
     },
