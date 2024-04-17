@@ -15,6 +15,27 @@ interface dataType {
   error: boolean;
   errorType: errorType;
   msg: string;
+  newEvent: newEventType;
+}
+
+interface newEventType {
+  id: number;
+  emp_code: string;
+  punch_time: Date;
+  punch_state: "0" | "1";
+  first_name: string;
+  day: string;
+  terminal_sn: string;
+}
+
+interface newEventType {
+  id: number;
+  emp_code: string;
+  punch_time: Date;
+  punch_state: "0" | "1";
+  first_name: string;
+  day: string;
+  terminal_sn: string;
 }
 
 const initialState: AppState = {
@@ -27,7 +48,8 @@ const initialState: AppState = {
         state: "",
         error: false,
         errorType: errorType.null_Uhod,
-        msg: ""
+        msg: "",
+        newEvent: { day: "1", emp_code: "1", first_name: "1", id: 1, punch_state: "0", punch_time: new Date(), terminal_sn: "1" }
       },
     },
   };

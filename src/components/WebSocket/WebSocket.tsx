@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useAppContext } from '../../State/AppProvider';
 import { transformData } from '../../utils/utils';
-import { formatDate, parseDateString } from '../utils/dateUtils';
+import { parseDateString } from '../utils/dateUtils';
 interface ServerToClientEvents {
     connect: () => void;
     disconnect: () => void;
@@ -60,6 +60,7 @@ interface newEventType {
 }
 
 
+
 interface WebSocketProps {
     date: string;
     onSocketDisconnected: () => void;
@@ -102,11 +103,7 @@ const WebSocket: React.FC<WebSocketProps> = ({date, onSocketDisconnected, onSock
 
             socket.on('notification', (data) => {
                 console.log('Notification', data);
-                
                 const parseDate = parseDateString(data.newEvent.day);
-                const formatedParseDate = formatDate(parseDate);
-                console.log('parseDate', parseDate);
-                console.log('formatedParseDate', formatedParseDate);
                 setDate(parseDate)
                 notify(data);
             });

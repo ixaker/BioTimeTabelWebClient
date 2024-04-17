@@ -20,6 +20,17 @@ interface dataType {
     error: boolean;
     errorType: errorType;
     msg: string;
+    newEvent: newEventType;
+  }
+
+  interface newEventType {
+    id: number;
+    emp_code: string;
+    punch_time: Date;
+    punch_state: "0" | "1";
+    first_name: string;
+    day: string;
+    terminal_sn: string;
   }
 
 export type AppState = {
