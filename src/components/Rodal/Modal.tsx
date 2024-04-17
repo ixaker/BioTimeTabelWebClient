@@ -97,21 +97,30 @@ const Modal: React.FC = () => {
         </p>
         <p style={nameStyles}>{data.first_name}</p>
         <p style={messageStyles} >
-          {messageText[data.errorType]?.message}
+          {data.error ? messageText[data.errorType]?.message : null}
         </p>
         <div style={buttonsContainer}>
           {data.error 
             ? <>
-                <ButtonX onClick={()=> {
-                  sendFalseEvent(data)
-                  onClose()
-                }}/>
-                <ButtonAccept onClick={()=> {
-                  data.errorType === 2 ? sendTrueEvent(data) : null;
-                  onClose()
-                }}/>
+                <ButtonX 
+                  onClick={()=> {
+                    sendFalseEvent(data)
+                    onClose()
+                  }}
+                  buttonText={messageText[data.errorType]?.noText}
+                />
+                <ButtonAccept 
+                  onClick={()=> {
+                    data.errorType === 2 ? sendTrueEvent(data) : null;
+                    onClose()
+                  }}
+                  buttonText={messageText[data.errorType]?.yesText}
+                />
               </>
-            : <ButtonOk onClick={()=> onClose()}/>
+            : <ButtonOk 
+                onClick={()=> onClose()}
+                buttonText=""
+              />
           }
         </div>
         <div style={timerContainer}>
