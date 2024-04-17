@@ -4,13 +4,9 @@ import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
 import { useAppContext } from '../../State/AppProvider';
 import { ButtonOk, ButtonX, ButtonAccept } from './Buttons';
-import { sendFalseEvent } from '../WebSocket/WebSocket';
+import { sendTrueEvent,sendFalseEvent } from '../WebSocket/WebSocket';
 import { messageText } from './messageTexts'
 import { CSSProperties } from 'react';
-
-
-
-
 
 const Modal: React.FC = () => {
 
@@ -21,6 +17,8 @@ const Modal: React.FC = () => {
   const [remainingTime, setRemainingTime] = useState(60);
   
   useEffect(() => {
+    let timer: NodeJS.Timeout;
+    let closeTimer: NodeJS.Timeout;
     if (visible) {
       setShowModal(false);
       setTimeout(() => {
@@ -28,32 +26,29 @@ const Modal: React.FC = () => {
         setRemainingTime(60);
       }, 200);
 
+      timer = setInterval(() => {
+        setRemainingTime(prevTime => prevTime - 1);
+      }, 1000);
+
+      closeTimer = setTimeout(() => {
+        onClose();
+      }, 600000);
     } else {
       setShowModal(false);
     }
+
+    return () => {
+      clearInterval(timer);
+      clearTimeout(closeTimer);
+    };
+
   }, [visible, data]);
 
-  useEffect(() => {
-    if (visible) {
-      const timer = setInterval(() => {
-        setRemainingTime(prevTime => prevTime - 1);
-      }, 1000);
-  
-      return () => clearInterval(timer);
-    }
-  }, [visible, data]);  
-
-  useEffect(() => {
-    if (visible) {
-      const timer = setTimeout(() => {
-        onClose();
-      }, 600000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [visible, data]);
 
   const onClose = () => {
+    console.log('onClose start');
+    
+    console.log({ visible: false, data: modal.data });
     dispatch({ type: 'SET_MODAL', payload: { visible: false, data: modal.data } });
   };
 
@@ -112,7 +107,7 @@ const Modal: React.FC = () => {
                   onClose()
                 }}/>
                 <ButtonAccept onClick={()=> {
-                  // sendTrueEvent(data)
+                  data.errorType === 2 ? sendTrueEvent(data) : null;
                   onClose()
                 }}/>
               </>
