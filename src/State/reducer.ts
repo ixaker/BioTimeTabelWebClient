@@ -70,22 +70,23 @@ const reducer = (state: AppState, action: Action): AppState => {
         case 'REPLACE_ALL':
             console.log('rudeucer REPLACE_ALL');
             filteredData = action.payload.filter(item => item.name !== null);
-            sortedData = filteredData.slice().sort((a, b) => {
-                if (a.type !== b.type) {
-                    return a.type.localeCompare(b.type);
-                }
-                return a.name.localeCompare(b.name);
-            });
+            sortedData = sort(filteredData);
+            // sortedData = filteredData.slice().sort((a, b) => {
+            //     if (a.type !== b.type) {
+            //         return a.type.localeCompare(b.type);
+            //     }
+            //     return a.name.localeCompare(b.name);
+            // });
             return { ...state, data: sortedData };
         case 'UPDATE_OR_ADD_DATA':
-        index = state.data.findIndex(item => {
-            return item.id === action.payload.id;
-        });
+            index = state.data.findIndex(item => {
+                return item.id === action.payload.id;
+            });
 
-        if (action.payload.name === null) {
-            action.payload.name = '';
-        }
-    
+            if (action.payload.name === null) {
+                action.payload.name = '';
+            }
+
             if (index !== -1) {
                 console.log('reducer UPDATE');
                 updatedData = [
@@ -93,23 +94,21 @@ const reducer = (state: AppState, action: Action): AppState => {
                     action.payload,
                     ...state.data.slice(index + 1),
                 ];
-                sortedData = updatedData.slice().sort((a, b) => a.name.localeCompare(b.name));
-               
+                // sortedData = updatedData.slice().sort((a, b) => a.name.localeCompare(b.name));
             } else {
                 console.log('reducer ADD');
                 updatedData = [...state.data, action.payload];
             }
-                sortedData = updatedData.slice().sort((a, b) => {
-                    if (a.type !== b.type) {
-                        return a.type.localeCompare(b.type);
-                    }
-                    return a.name.localeCompare(b.name);
-                });
-                return {
-                    ...state,
-                    data: sortedData,
-                };
-            
+
+            sortedData = sort(updatedData);
+            // sortedData = updatedData.slice().sort((a, b) => {
+            //     if (a.type !== b.type) {
+            //         return a.type.localeCompare(b.type);
+            //     }
+            //     return a.name.localeCompare(b.name);
+            // });
+            return { ...state, data: sortedData };
+                
         case 'SET_MODAL':
             console.log('case SET_MODAL');
             console.log(action.payload);
@@ -120,3 +119,22 @@ const reducer = (state: AppState, action: Action): AppState => {
 };
 
 export default reducer;
+
+function sort(data: Data[]) : Data[] {
+    const sortedData = data.slice().sort((a, b) => {
+
+        if (a.type !== b.type) {
+            return a.type.localeCompare(b.type);
+        }
+
+        if (a.name == b.name) {
+            return a.arrival.localeCompare(b.arrival);
+        }
+
+        return a.name.localeCompare(b.name);
+    });
+    
+    return sortedData;
+}
+
+

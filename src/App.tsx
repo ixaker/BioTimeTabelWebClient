@@ -15,7 +15,9 @@ function App() {
   const [date, setDate] = useState(getCurrentDate());
   const [isDataLoaded, setIsDataLoaded] = useState(true);
   const [isSocketDisconnect, setIsSocketDisconnect] = useState(false);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
   const memoizedState = useMemo(() => ({ date, isDataLoaded }), [date, isDataLoaded]);
+
 
   useEffect(() => {
     if (state.data.length > 0) {
@@ -46,12 +48,16 @@ function App() {
         onSocketDisconnected={() => setIsSocketDisconnect(true)}
         onSocketConnected={() => setIsSocketDisconnect(false)}
         setDate={setDate}
+        setSelectedId={setSelectedId}
       />
       {/* <ScreenWakeLock/> */}
       {memoizedState.isDataLoaded 
       ? <>
           <Slider handleSliderClick={handleSliderClick} date={formatDate(memoizedState.date)}/>
-          <Table data={state.data}/>
+          <Table 
+            data={state.data}
+            selectedId={selectedId}
+          />
           <Modal/>
         </>
       : <Loader/>

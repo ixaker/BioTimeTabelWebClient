@@ -13,7 +13,7 @@ const CircularProgressTimer: React.FC<CircularProgressTimerProps> = ({time, rema
 return (
     <div 
         style={{
-            marginLeft: '20px',
+            
         }}
     >
    

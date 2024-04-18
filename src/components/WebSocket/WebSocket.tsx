@@ -66,11 +66,18 @@ interface WebSocketProps {
     onSocketDisconnected: () => void;
     onSocketConnected: () => void;
     setDate: (date: Date) => void;
+    setSelectedId: (id: number | null) => void;
 }
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
-const WebSocket: React.FC<WebSocketProps> = ({date, onSocketDisconnected, onSocketConnected, setDate}) => {
+const WebSocket: React.FC<WebSocketProps> = ({
+    date, 
+    setDate,
+    onSocketDisconnected, 
+    onSocketConnected,
+    setSelectedId
+}) => {
     
     const { notify, dispatch } = useAppContext();
     const memoizedDate = useMemo(() => date, [date]);
@@ -82,14 +89,12 @@ const WebSocket: React.FC<WebSocketProps> = ({date, onSocketDisconnected, onSock
         if (!socket) {    
             socket = io('http://10.8.0.4:3000');
 
-            const handleUpdate = (data: rowData) => {
-                console.log('Update', data);
-                dispatch({ type: 'UPDATE_OR_ADD_DATA', payload: data });
-            };
+            
 
             socket.on('connect', () => {
                 console.log('WebSocket connection established successfully');
-                socket.emit('getList', { date, terminal_sns: ['CN99212360023', 'CN99212360024'] } as { date: string });
+                // socket.emit('getList', { date, terminal_sns: ['CN99212360023', 'CN99212360024'] } as { date: string });
+                socket.emit('getList', { date, terminal_sns: ['CN99212360023'] } as { date: string });
                 onSocketConnected()
             });
 
@@ -99,13 +104,25 @@ const WebSocket: React.FC<WebSocketProps> = ({date, onSocketDisconnected, onSock
                 dispatch({ type: 'REPLACE_ALL', payload: transformedData });
             });
 
+            
+            const handleUpdate = (data: rowData) => {
+                console.log('Update', data);
+                if (data.id && typeof data.id === 'number') {
+                    setSelectedId(data.id);
+                }
+                dispatch({ type: 'UPDATE_OR_ADD_DATA', payload: data });
+            };
+
             socket.on('update', handleUpdate)
 
             socket.on('notification', (data) => {
                 console.log('Notification', data);
                 const parseDate = parseDateString(data.newEvent.day);
                 setDate(parseDate)
-                notify(data);
+                setTimeout(() => {
+                    notify(data);    
+                }, 100);
+                
             });
         
             socket.on('disconnect', () => {

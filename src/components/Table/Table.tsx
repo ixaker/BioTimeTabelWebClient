@@ -19,9 +19,12 @@ type CustomColumn<Data extends object = object> = Column<Data> & {
 
 interface Props {
   data: Data[];
+  selectedId: number | null;
 }
 
-const Table: React.FC<Props> = ({ data }) => {
+const Table: React.FC<Props> = ({ data, selectedId }) => {
+  console.log(data);
+  
   const columns: CustomColumn<Data>[] = React.useMemo(
     () => [
       {
@@ -41,7 +44,7 @@ const Table: React.FC<Props> = ({ data }) => {
         className: 'arrival-cell',
       },
       {
-        Header: 'Ухід',
+        Header: 'Уход',
         accessor: 'departure',
         className: 'departure-cell',
       },
@@ -51,7 +54,7 @@ const Table: React.FC<Props> = ({ data }) => {
         className: 'duration-cell',
       },
       {
-        Header: 'Всього.',
+        Header: 'Всього',
         accessor: 'total',
         className: 'duration-cell',
       },
@@ -81,10 +84,11 @@ const Table: React.FC<Props> = ({ data }) => {
       <tbody {...getTableBodyProps()} className='tbody'>
         {rows.map(row => {
           prepareRow(row);
+          const tdClassName = row.original.id === selectedId ? 'highlight' : '';
           return (
-            <tr {...row.getRowProps()}>
+            <tr {...row.getRowProps()} >
               {row.cells.map(cell => (
-                <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                <td {...cell.getCellProps()} className={tdClassName}>{cell.render('Cell') } </td>
               ))}
             </tr>
           );

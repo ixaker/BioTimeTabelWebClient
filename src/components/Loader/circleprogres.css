@@ -1,0 +1,9 @@
+.progress-ring {
+    transition: stroke-dashoffset 0.5s ease-in-out;
+  }
+  
+  .progress-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+  }
