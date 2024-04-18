@@ -1,7 +1,7 @@
 import React from 'react';
 import { Column, useTable } from 'react-table';
 import './table.css';
-
+import { useAppContext } from '../../State/AppProvider';
 
 interface Data {
   id: number;
@@ -18,12 +18,13 @@ type CustomColumn<Data extends object = object> = Column<Data> & {
 };
 
 interface Props {
-  data: Data[];
   selectedId: number | null;
 }
 
-const Table: React.FC<Props> = ({ data, selectedId }) => {
-  console.log(data);
+const Table: React.FC<Props> = ({selectedId}) => {
+  console.log('Table start');
+  const { state } = useAppContext();
+  const data = state.data;
   
   const columns: CustomColumn<Data>[] = React.useMemo(
     () => [

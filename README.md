@@ -1,2 +1,2 @@
 Тестовий деплой 
-https://bio-time-tabel-web-client.vercel.app/
+Додати url для зв'язку веб сокет
