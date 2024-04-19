@@ -4,7 +4,7 @@ import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
 import { useAppContext } from '../../State/AppProvider';
 import { ButtonOk, ButtonX, ButtonAccept } from './Buttons';
-import { sendTrueEvent, sendFalseEvent } from '../WebSocket/WebSocket';
+import { sendTrueEvent, sendFalseEvent } from '../WebSocket/WebSocket2';
 import { messageText } from './messageTexts'
 import { CSSProperties } from 'react';
 
@@ -178,7 +178,7 @@ const nameStyles: CSSProperties = {
 
 const messageStyles: CSSProperties = {
   color: "rgb(141, 4, 4)",
-  fontSize: "2.2em",
+  fontSize: "1.5em",
   fontWeight: "500",
   marginBottom: "10px",
 }

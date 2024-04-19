@@ -13,7 +13,7 @@ enum errorType {
     Uhod_Uhod,
     Prihod_Prihod
   }
-interface dataType {
+export interface dataType {
     first_name: string;
     time: string;
     state: string;

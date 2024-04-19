@@ -66,7 +66,7 @@ const buttonBaseStyle = {
   border: '2px solid',
   borderRadius: '5px',
   padding: '10px',
-  fontSize: '2rem',
+  fontSize: '1.6rem',
   lineHeight: '2.5rem',
   color: 'white',
   cursor: 'pointer',

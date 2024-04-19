@@ -2,7 +2,7 @@ export const getWebSocketUrl = (): string => {
     const urlParams = new URLSearchParams(window.location.search);
     const socketUrl = urlParams.get('ip');
 
-    return socketUrl ? socketUrl : 'http://192.168.0.110';
+    return socketUrl ? socketUrl : 'http://192.168.0.110:3000';
 };
 
 

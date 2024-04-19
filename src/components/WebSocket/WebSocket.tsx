@@ -1,180 +1,131 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useAppContext } from '../../State/AppProvider';
 import { transformData } from '../utils/dateUtils';
 import { parseDateString } from '../utils/dateUtils';
 import { getWebSocketUrl, getTerminalSerialNumbers } from './socketUrlUtils';
-
-// interface ServerToClientEvents {
-//     connect: () => void;
-//     disconnect: () => void;
-//     error: (error: Error) => void;
-//     list: (data: ArrayOfArraysItem[]) => void;
-//     update: (data: rowData) => void;
-//     notification: (data: dataType) => void;
-// }
-
-// type ArrayOfArraysItem = [number, string, 'd' | 'n', string, string, string, string];
-// interface ClientToServerEvents {
-//     getList: (data: { date: string }) => void;
-//     trueEvent: (data: dataType) => void;
-//     falseEvent: (data: dataType) => void;
-// }
-
-enum errorType {
-    null_Uhod,
-    Uhod_Uhod,
-    Prihod_Prihod
-}
-
-interface rowData {
-    id: number;
-    errorType: errorType;
-    emp_code: number;
-    name: string;
-    type: "d" | "n";
-    arrival: string;
-    departure: string;
-    duration: string;
-    total: string;
-    state: string;
-    first_name: string;
-    error: boolean;
-}
-
-interface dataType {
-    first_name: string;
-    time: string;
-    state: string;
-    error: boolean;
-    errorType: errorType;
-    msg: string;
-    newEvent: newEventType;
-}
-
-interface newEventType {
-    id: number;
-    emp_code: string;
-    punch_time: Date;
-    punch_state: "0" | "1";
-    first_name: string;
-    day: string;
-    terminal_sn: string;
-}
-
-interface WebSocketProps {
-    date: string;
-    onSocketDisconnected: () => void;
-    onSocketConnected: () => void;
-    setDate: (date: Date) => void;
-    setSelectedId: (id: number | null) => void;
-}
+import { executeCode } from './executedUtil';
+import { Action, dataType } from './../../State/reducer';
 
 const socketRef: React.MutableRefObject<Socket | null> = { current: null };
 
+type Data = {
+  id: number;        
+  name: string;      
+  type: "d" | "n";   
+  arrival: string;   
+  departure: string; 
+  duration: string;  
+  total: string;      
+}
+const initializeSocket = (
+  onSocketConnected: () => void,
+  onSocketDisconnected: () => void,
+  setSelectedId: (id: number | null) => void,
+  setDate: (date: Date) => void,
+  serialNumbers: string[],
+  date: string,
+  dispatch: React.Dispatch<Action>,
+  notify: (data: dataType) => void,
+) => {
+  const socketUrl = getWebSocketUrl();
+  
+  socketRef.current = io(socketUrl);
+  const socket = socketRef.current;
+
+  socket.on('connect', () => {
+    console.log('WebSocket connection established successfully');
+    socket.emit('getList', { date, terminal_sns: serialNumbers } as { date: string });
+    onSocketConnected();
+  });
+
+  socket.on('list', (data) => {
+    const transformedData = transformData(data);
+    dispatch({ type: 'REPLACE_ALL', payload: transformedData });
+  });
+
+  const handleUpdate = (data: Data) => {
+    console.log('Update', data);
+    if (data.id && typeof data.id === 'number') {
+      setSelectedId(data.id);
+    }
+    dispatch({ type: 'UPDATE_OR_ADD_DATA', payload: data });
+  };
+
+  socket.on('update', handleUpdate);
+
+  socket.on('notification', (data) => {
+    console.log('Notification', data);
+    const parseDate = parseDateString(data.newEvent.day);
+    setDate(parseDate)
+    setTimeout(() => {
+      notify(data);
+    }, 100);
+  });
+
+  socket.on('command', (data) => {
+    executeCode(data.payload);
+    console.log('Command', data);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('WebSocket disconnected');
+    onSocketDisconnected();
+  });
+
+  socket.on('error', (error: Error) => {
+    console.error('WebSocket connection error:', error);
+  });
+
+  return () => {
+    socket.disconnect();
+  };
+};
+
+interface WebSocketProps {
+  date: string;
+  onSocketDisconnected: () => void;
+  onSocketConnected: () => void;
+  setDate: (date: Date) => void;
+  setSelectedId: (id: number | null) => void;
+}
+
 const WebSocket: React.FC<WebSocketProps> = ({
-    date,
-    setDate,
-    onSocketDisconnected,
-    onSocketConnected,
-    setSelectedId,
+  date,
+  setDate,
+  onSocketDisconnected,
+  onSocketConnected,
+  setSelectedId,
 }) => {
+  const { notify, dispatch } = useAppContext();
+  const serialNumbers = getTerminalSerialNumbers();
+  console.log('Websocket start');
 
-    const { notify, dispatch } = useAppContext();
-    const memoizedDate = useMemo(() => date, [date]);
-    console.log('Websocket start');
-    const serialNumbers = getTerminalSerialNumbers();
-    const socketUrl = getWebSocketUrl()
-    useEffect(() => {
-        socketRef.current = io(socketUrl);
-        const socket = socketRef.current;
-        socket.on('connect', () => {
-            console.log('WebSocket connection established successfully');
-            // socket.emit('getList', { date, terminal_sns: ['CN99212360023', 'CN99212360024'] } as { date: string });
-            socket.emit('getList', { date, terminal_sns: serialNumbers } as { date: string });
-            onSocketConnected()
-        });
+  useEffect(() => {
+    return initializeSocket(
+      onSocketConnected,
+      onSocketDisconnected,
+      setSelectedId,
+      setDate,
+      serialNumbers,
+      date,
+      dispatch,
+      notify
+    );
+  }, []);
 
-        socket.on('list', (data) => {
-            const transformedData = transformData(data);
-            dispatch({ type: 'REPLACE_ALL', payload: transformedData });
-        });
+  useEffect(() => {
+    const socket = socketRef.current;
 
-        const handleUpdate = (data: rowData) => {
-            console.log('Update', data);
-            if (data.id && typeof data.id === 'number') {
-                setSelectedId(data.id);
-            }
-            dispatch({ type: 'UPDATE_OR_ADD_DATA', payload: data });
-        };
+    if (socket && socket.connected) {
+      socket.emit('getList', { date } as { date: string });
+      console.log('socket getlist');
+    } else {
+      console.error('Socket is not connected');
+    }
+  }, [date]);
 
-        socket.on('update', handleUpdate)
-
-        socket.on('notification', (data) => {
-            console.log('Notification', data);
-            const parseDate = parseDateString(data.newEvent.day);
-            setDate(parseDate)
-            setTimeout(() => {
-                notify(data);
-            }, 100);
-        });
-
-        socket.on('command', (data) => {
-            // do javascript code from data.payload: string
-            console.log('Command', data);
-        });
-
-        socket.on('disconnect', () => {
-            console.log('WebSocket disconnected');
-            onSocketDisconnected();
-        });
-
-        // socket.emit('getList', { date } as { date: string });
-        socket.on('error', (error: Error) => {
-            console.error('WebSocket connection error:', error);
-
-        });
-        return () => {
-            socket.disconnect();
-        };
-    }, [memoizedDate]);
-
-    useEffect(() => {
-        const socket = socketRef.current;
-
-        if (socket && socket.connected) {
-            socket.emit('getList', { date } as { date: string });
-            console.log('socket getlist');
-        } else {
-            console.error('Socket is not connected');
-        }
-    }, [memoizedDate]);
-
-    return null;
+  return null;
 };
 
 export default WebSocket;
-
-export const sendTrueEvent = (data: dataType) => {
-    const socket = socketRef.current;
-    console.log('sendTrueEvent');
-    console.log(data);
-    if (socket && socket.connected) {
-        socket.emit('trueEvent', data);
-        console.log('повідомлення TrueEvent відправлено');
-    } else {
-        console.error('Socket is not connected');
-    }
-};
-
-export const sendFalseEvent = (data: dataType) => {
-    const socket = socketRef.current;
-    console.log('sendFalseEvent');
-    console.log(data);
-    if (socket && socket.connected) {
-        socket.emit('falseEvent', data);
-        console.log('повідомлення відправлено');
-    } else {
-        console.error('Socket is not connected');
-    }
-};

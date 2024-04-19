@@ -14,13 +14,12 @@ export default defineConfig({
         display: 'standalone',
         background_color: '#ffffff',
         theme_color: '#ffffff',
-        icons: [
-          {
-            src: '/icon.png',
-            sizes: '192x192',
-            type: 'image/png'
-          }
-        ]
+          "icons": [
+            {"src":"/logo_192.png","sizes":"192x192","type":"image/png"},
+            {"src":"/logo_96.png","sizes":"96x96","type":"image/png"},
+            {"src":"/logo_72.png","sizes":"72x72","type":"image/png"},
+            {"src":"/logo_48.png","sizes":"48x48","type":"image/png"}
+        ],
       }
     })
   ]
