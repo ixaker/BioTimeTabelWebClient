@@ -29,6 +29,8 @@ const initializeSocket = (
   notify: (data: dataType) => void,
 ) => {
   const socketUrl = getWebSocketUrl();
+  console.log('socketUrl', socketUrl );
+  
   
   socketRef.current = io(socketUrl);
   const socket = socketRef.current;

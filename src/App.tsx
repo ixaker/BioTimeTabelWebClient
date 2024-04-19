@@ -9,7 +9,7 @@ import Loader from './components/Loader/Loader'
 import LoaderDisconect from './components/Loader/LoaderDisconect'
 import DataLoadingComponent from './components/DataLoadingComponent/DataLoadingComponent'
 // import ScreenWakeLock from './components/WakeLock/WakeLock'
-
+import FullScreen from './components/FullScreen/FullScreen'
 function App() {
   const [date, setDate] = useState(getCurrentDate());
   // const [isDataLoaded, setIsDataLoaded] = useState(true);
@@ -54,6 +54,7 @@ function App() {
             selectedId={selectedId}
           />
           <Modal />
+          <FullScreen />
         </>
         : <Loader />
       }

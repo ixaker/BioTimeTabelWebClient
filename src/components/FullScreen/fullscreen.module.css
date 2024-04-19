@@ -1,0 +1,32 @@
+.fullScreenContainer {
+    position: fixed;
+    bottom: 20px; 
+    right: 20px; 
+  }
+  
+  .fullScreenButton {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #0e0e0e;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 5px;
+    cursor: pointer;
+   
+  }
+  
+  .fullScreenButton:hover {
+    scale: 0.95 
+  }
+
+  .fullScreenButton:active {
+    animation: clickAnimation 3s ease;
+  }
+
+  @keyframes clickAnimation {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(0.95);
+    }
+  }
