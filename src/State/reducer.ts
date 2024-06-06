@@ -1,5 +1,5 @@
 
-type Data = {
+export type Data = {
     id: number;        
     name: string;      
     type: "d" | "n";   
@@ -8,6 +8,7 @@ type Data = {
     duration: string;  
     total: string;      
 }
+
 enum errorType {
     null_Uhod,
     Uhod_Uhod,

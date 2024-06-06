@@ -31,8 +31,6 @@ return (
             value={(time-remainingTime)*100/time}
             color="success"
             variant="soft"
-            
-            
         >
             <Typography
                 style={{ 

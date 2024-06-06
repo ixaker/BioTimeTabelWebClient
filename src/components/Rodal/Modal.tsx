@@ -1,17 +1,15 @@
 // ModalComponent.tsx
-import { useState, useEffect } from 'react';
-import Rodal from 'rodal';
-import 'rodal/lib/rodal.css';
-import { useAppContext } from '../../State/AppProvider';
-import { ButtonOk, ButtonX, ButtonAccept } from './Buttons';
-import { sendTrueEvent, sendFalseEvent } from '../WebSocket/WebSocket2';
-import { messageText } from './messageTexts'
-import { CSSProperties } from 'react';
-
-
+import { useState, useEffect } from "react";
+import Rodal from "rodal";
+import "rodal/lib/rodal.css";
+import { useAppContext } from "../../State/AppProvider";
+import { ButtonOk, ButtonX, ButtonAccept } from "./Buttons";
+import { sendTrueEvent, sendFalseEvent } from "./../WebSocket/WebSocket";
+import { messageText } from "./messageTexts";
+import { CSSProperties } from "react";
+import styles from "./modal.module.css";
 
 const Modal: React.FC = () => {
-
   const { state, dispatch } = useAppContext();
   const { modal } = state;
   const { visible, data } = modal;
@@ -30,29 +28,31 @@ const Modal: React.FC = () => {
       }, 200);
 
       timer = setInterval(() => {
-        setRemainingTime(prevTime => prevTime - 1);
+        setRemainingTime((prevTime) => prevTime - 1);
       }, 1000);
-
     } else {
       setShowModal(false);
     }
 
     return () => {
-      console.log('clearInterval(timer)');
+      console.log("clearInterval(timer)");
 
       clearInterval(timer);
     };
   }, [visible, data]);
 
   const onClose = () => {
-    console.log('onClose start');
+    console.log("onClose start");
     console.log({ visible: false, data: modal.data });
-    dispatch({ type: 'SET_MODAL', payload: { visible: false, data: modal.data } });
+    dispatch({
+      type: "SET_MODAL",
+      payload: { visible: false, data: modal.data },
+    });
   };
 
   useEffect(() => {
     if (remainingTime === 0 && visible) {
-      console.log('remainingTime === 0');
+      console.log("remainingTime === 0");
       setRemainingTime(60);
       onClose();
     }
@@ -65,7 +65,7 @@ const Modal: React.FC = () => {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    width: '90%',
+    width: "90%",
     maxWidth: "700px",
     backgroundColor: "white",
     height: "fit-content",
@@ -75,7 +75,6 @@ const Modal: React.FC = () => {
     ...commonStyles,
     border: data.error ? "10px solid red" : "10px solid green",
     animation: data.error ? "blinkingBackground 0.3s infinite alternate" : undefined, // При потребі вказати інше значення для animation
-
   };
 
   return (
@@ -86,32 +85,29 @@ const Modal: React.FC = () => {
       duration={300}
       closeOnEsc
       showCloseButton={false}
-      enterAnimation='zoom'
+      enterAnimation="zoom"
       showMask
       customStyles={customStyles}
       customMaskStyles={{
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
-
     >
-      <div style={modalContainer}>
-        <p style={titleStyles}>
-          {data.state} -  {data.time}
+      <div className={styles.modalContainer}>
+        <p className={styles.titleStyles}>
+          {data.state} - {data.time}
         </p>
-        <p style={nameStyles}>{data.first_name}</p>
-        <p style={messageStyles} >
-          {data.error ? messageText[data.errorType]?.message : null}
-        </p>
-        <div style={buttonsContainer}>
-          {data.error
-            ? <>
+        <p className={styles.nameStyles}>{data.first_name}</p>
+        <p className={styles.messageStyles}>{data.error ? messageText[data.errorType]?.message : null}</p>
+        <div className={styles.buttonsContainer}>
+          {data.error ? (
+            <>
               <ButtonX
                 onClick={() => {
-                  sendFalseEvent(data)
-                  onClose()
+                  sendFalseEvent(data);
+                  onClose();
                 }}
                 buttonText={messageText[data.errorType]?.noText}
                 time={60}
@@ -121,7 +117,7 @@ const Modal: React.FC = () => {
               <ButtonAccept
                 onClick={() => {
                   data.errorType === 2 ? sendTrueEvent(data) : null;
-                  onClose()
+                  onClose();
                 }}
                 buttonText={messageText[data.errorType]?.yesText}
                 time={60}
@@ -129,18 +125,17 @@ const Modal: React.FC = () => {
                 progress={data.errorType === 1 || data.errorType === 0}
               />
             </>
-            : <ButtonOk
+          ) : (
+            <ButtonOk
               onClick={() => onClose()}
               buttonText="підтвердити"
               time={60}
               remainingTime={remainingTime}
               progress={false}
             />
-          }
+          )}
         </div>
-        <div style={timerContainer}>
-          {/* Час до закриття: {remainingTime} сек. */}
-        </div>
+        <div className={styles.timerContainer}>{/* Час до закриття: {remainingTime} сек. */}</div>
       </div>
     </Rodal>
   );
@@ -157,7 +152,7 @@ const modalContainer: CSSProperties = {
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-}
+};
 
 const titleStyles: CSSProperties = {
   marginTop: "20px",
@@ -167,21 +162,21 @@ const titleStyles: CSSProperties = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-}
+};
 
 const nameStyles: CSSProperties = {
   margin: 0,
   marginBottom: "10px",
   fontSize: "3.2em",
   fontWeight: "600",
-}
+};
 
 const messageStyles: CSSProperties = {
   color: "rgb(141, 4, 4)",
   fontSize: "1.5em",
   fontWeight: "500",
   marginBottom: "10px",
-}
+};
 
 const buttonsContainer: CSSProperties = {
   display: "flex",
@@ -189,8 +184,7 @@ const buttonsContainer: CSSProperties = {
   justifyContent: "space-around",
   alignItems: "center",
   width: "100%",
-
-}
+};
 
 const timerContainer: CSSProperties = {
   display: "flex",
@@ -198,4 +192,4 @@ const timerContainer: CSSProperties = {
   justifyContent: "center",
   alignItems: "center",
   width: "100%",
-}
+};
