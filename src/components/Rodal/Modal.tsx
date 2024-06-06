@@ -143,53 +143,53 @@ const Modal: React.FC = () => {
 
 export default Modal;
 
-const modalContainer: CSSProperties = {
-  border: "0px solid #ccc",
-  borderRadius: "5px",
-  padding: "10px",
-  width: "100%",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-};
+// const modalContainer: CSSProperties = {
+//   border: "0px solid #ccc",
+//   borderRadius: "5px",
+//   padding: "10px",
+//   width: "100%",
+//   display: "flex",
+//   flexDirection: "column",
+//   justifyContent: "center",
+//   alignItems: "center",
+// };
 
-const titleStyles: CSSProperties = {
-  marginTop: "20px",
-  margin: "10px",
-  fontWeight: "bold",
-  fontSize: "3.2em",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-};
+// const titleStyles: CSSProperties = {
+//   marginTop: "20px",
+//   margin: "10px",
+//   fontWeight: "bold",
+//   fontSize: "3.2em",
+//   display: "flex",
+//   justifyContent: "center",
+//   alignItems: "center",
+// };
 
-const nameStyles: CSSProperties = {
-  margin: 0,
-  marginBottom: "10px",
-  fontSize: "3.2em",
-  fontWeight: "600",
-};
+// const nameStyles: CSSProperties = {
+//   margin: 0,
+//   marginBottom: "10px",
+//   fontSize: "3.2em",
+//   fontWeight: "600",
+// };
 
-const messageStyles: CSSProperties = {
-  color: "rgb(141, 4, 4)",
-  fontSize: "1.5em",
-  fontWeight: "500",
-  marginBottom: "10px",
-};
+// const messageStyles: CSSProperties = {
+//   color: "rgb(141, 4, 4)",
+//   fontSize: "1.5em",
+//   fontWeight: "500",
+//   marginBottom: "10px",
+// };
 
-const buttonsContainer: CSSProperties = {
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-around",
-  alignItems: "center",
-  width: "100%",
-};
+// const buttonsContainer: CSSProperties = {
+//   display: "flex",
+//   flexDirection: "row",
+//   justifyContent: "space-around",
+//   alignItems: "center",
+//   width: "100%",
+// };
 
-const timerContainer: CSSProperties = {
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "center",
-  alignItems: "center",
-  width: "100%",
-};
+// const timerContainer: CSSProperties = {
+//   display: "flex",
+//   flexDirection: "row",
+//   justifyContent: "center",
+//   alignItems: "center",
+//   width: "100%",
+// };

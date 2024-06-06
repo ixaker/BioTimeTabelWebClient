@@ -10,7 +10,7 @@ interface ButtonProps {
 
 export const ButtonX: React.FC<ButtonProps> = ({ onClick, buttonText }) => {
   return (
-    <button style={buttonXStyle} className={styles.button} onClick={onClick}>
+    <button className={styles.button} onClick={onClick}>
       <div>{buttonText}</div>
     </button>
   );
@@ -18,7 +18,7 @@ export const ButtonX: React.FC<ButtonProps> = ({ onClick, buttonText }) => {
 
 export const ButtonOk: React.FC<ButtonProps> = ({ onClick, buttonText }) => {
   return (
-    <button style={buttonOkStyle} className={styles.button} onClick={onClick}>
+    <button className={styles.button} onClick={onClick}>
       <div>{buttonText}</div>
     </button>
   );
@@ -39,30 +39,30 @@ export const ButtonAccept: React.FC<ButtonProps> = ({ onClick, buttonText, time,
 };
 
 // Основний об'єкт зі спільними властивостями
-const buttonBaseStyle = {
-  // border: "2px solid",
-  // borderRadius: "5px",
-  // padding: "10px",
-  // fontSize: "1.6rem",
-  // lineHeight: "2.5rem",
-  // color: "white",
-  // cursor: "pointer",
-  // display: "flex",
-  // alignItems: "center",
-  // justifyContent: "center",
-  // margin: "20px 0px 20px 0px",
-  // width: "45%",
-  // height: "auto",
-};
+// const buttonBaseStyle = {
+// border: "2px solid",
+// borderRadius: "5px",
+// padding: "10px",
+// fontSize: "1.6rem",
+// lineHeight: "2.5rem",
+// color: "white",
+// cursor: "pointer",
+// display: "flex",
+// alignItems: "center",
+// justifyContent: "center",
+// margin: "20px 0px 20px 0px",
+// width: "45%",
+// height: "auto",
+// };
 
-const buttonXStyle = {
-  // ...buttonBaseStyle,
-  // border: "2px solid #1f7a1f",
-  // backgroundColor: "#1f7a1f",
-};
+// const buttonXStyle = {
+// ...buttonBaseStyle,
+// border: "2px solid #1f7a1f",
+// backgroundColor: "#1f7a1f",
+// };
 
-const buttonOkStyle = {
-  // ...buttonBaseStyle,
-  // border: "2px solid #1f7a1f",
-  // backgroundColor: "#1f7a1f",
-};
+// const buttonOkStyle = {
+// ...buttonBaseStyle,
+// border: "2px solid #1f7a1f",
+// backgroundColor: "#1f7a1f",
+// };
