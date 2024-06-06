@@ -1,10 +1,14 @@
 export const getWebSocketUrl = (): string => {
     const urlParams = new URLSearchParams(window.location.search);
+    console.log('urlParams', window.location);
     const socketUrl = urlParams.get('ip');
     console.log('socketUrl', socketUrl);
+    let hostname = window.location.hostname;
+    if (hostname === 'localhost') {
+        hostname = '10.8.0.4';
+    }
 
-
-    return socketUrl ? socketUrl : 'http://10.8.0.4:3000';
+    return socketUrl ? socketUrl : `${hostname}:3000`;
 };
 
 export const getTerminalSerialNumbers = (): string[] => {
