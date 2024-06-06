@@ -26,7 +26,7 @@ export const ButtonOk: React.FC<ButtonProps> = ({ onClick, buttonText }) => {
 
 export const ButtonAccept: React.FC<ButtonProps> = ({ onClick, buttonText, time, remainingTime, progress }) => {
   return (
-    <button style={buttonOkStyle} className={styles.button} onClick={onClick}>
+    <button className={styles.button} onClick={onClick}>
       <div>{buttonText}</div>
 
       {progress ? (
