@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import "./App.css";
 import WebSocket from "./components/WebSocket/WebSocket";
+import HideTable from "./components/HideTable/HideTable";
 import Slider from "./components/Slider/Slider";
 import Table from "./components/Table/Table";
 import Modal from "./components/Rodal/Modal";
@@ -40,10 +41,12 @@ function App() {
       {/* <ScreenWakeLock/> */}
       {isDataLoaded ? (
         <>
-          <Slider handleSliderClick={handleSliderClick} date={memoizedDate} />
-          <Table selectedId={selectedId} />
+          <HideTable>
+            <Slider handleSliderClick={handleSliderClick} date={memoizedDate} />
+            <Table selectedId={selectedId} />
+            <FullScreen />
+          </HideTable>
           <Modal />
-          <FullScreen />
         </>
       ) : (
         <Loader />
