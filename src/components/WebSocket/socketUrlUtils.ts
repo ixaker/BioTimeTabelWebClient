@@ -1,6 +1,5 @@
 export const getWebSocketUrl = (): string => {
     const urlParams = new URLSearchParams(window.location.search);
-    console.log('urlParams', window.location);
     const socketUrl = urlParams.get('ip');
     console.log('socketUrl', socketUrl);
     let hostname = window.location.hostname;
@@ -15,6 +14,7 @@ export const getTerminalSerialNumbers = (): string[] => {
     const urlParams = new URLSearchParams(window.location.search);
     const serialNumbers: string[] = [];
     const snOfProduction = 'CN99212360024';
+    const localStorageKey = 'serialNumbers';
 
     if (urlParams.has('sn1')) {
         serialNumbers.push(urlParams.get('sn1') || '');
@@ -24,6 +24,17 @@ export const getTerminalSerialNumbers = (): string[] => {
     }
     if (urlParams.has('sn3')) {
         serialNumbers.push(urlParams.get('sn3') || '');
+    }
+
+    if (serialNumbers.length > 0) {
+        localStorage.setItem(localStorageKey, JSON.stringify(serialNumbers));
+    } else {
+        const storedSerialNumbers = localStorage.getItem(localStorageKey);
+        if (storedSerialNumbers) {
+            return JSON.parse(storedSerialNumbers);
+        } else {
+            return [snOfProduction];
+        }
     }
 
     return serialNumbers.length > 0 ? serialNumbers : [snOfProduction];
