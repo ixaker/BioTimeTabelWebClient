@@ -128,7 +128,7 @@ const WebSocket: React.FC<WebSocketProps> = ({
       socket.emit("getList", { date, terminal_sns: serialNumbers } as {
         date: string;
       });
-      console.log("socket getlist");
+      console.log("socket getlist, data:", { date, terminal_sns: serialNumbers });
     } else {
       console.error("Socket is not connected from useEffect");
     }
