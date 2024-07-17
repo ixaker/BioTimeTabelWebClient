@@ -14,8 +14,8 @@
 }
 
 .rodal-close {
-  font-size: 45px; /* Змінюємо розмір значка */
-  color: red; /* Змінюємо колір значка */
+  font-size: 45px;
+  color: red;
 }
 
 .rodal-close.rodal-close-btn {
@@ -24,11 +24,11 @@
 
 @keyframes blinkingBackground {
   0% {
-    border-color: #ff0000; /* Початковий колір фону */
+    border-color: #ff0000;
   }
 
   100% {
-    border-color: #f8afaf; /* Повернення до початкового колору */
+    border-color: #f8afaf;
   }
 }
 

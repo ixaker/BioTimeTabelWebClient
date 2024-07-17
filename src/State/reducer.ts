@@ -1,19 +1,19 @@
 
 export type Data = {
-    id: number;        
-    name: string;      
-    type: "d" | "n";   
-    arrival: string;   
-    departure: string; 
-    duration: string;  
-    total: string;      
+    id: number;
+    name: string;
+    type: "d" | "n";
+    arrival: string;
+    departure: string;
+    duration: string;
+    total: string;
 }
 
 enum errorType {
     null_Uhod,
     Uhod_Uhod,
     Prihod_Prihod
-  }
+}
 export interface dataType {
     first_name: string;
     time: string;
@@ -22,9 +22,9 @@ export interface dataType {
     errorType: errorType;
     msg: string;
     newEvent: newEventType;
-  }
+}
 
-  interface newEventType {
+interface newEventType {
     id: number;
     emp_code: string;
     punch_time: Date;
@@ -32,24 +32,24 @@ export interface dataType {
     first_name: string;
     day: string;
     terminal_sn: string;
-  }
+}
 
 export type AppState = {
     data: Data[];
     modal: {
-      visible: boolean;
-      data: dataType;
+        visible: boolean;
+        data: dataType;
     };
 };
 
 type ReplaceAllAction = {
     type: 'REPLACE_ALL',
     payload: Data[]
-  };
-  
+};
+
 type UpdateOrAddDataAction = {
-type: 'UPDATE_OR_ADD_DATA';
-payload: Data; 
+    type: 'UPDATE_OR_ADD_DATA';
+    payload: Data;
 };
 
 export type ModalAction = {
@@ -61,7 +61,7 @@ export type ModalAction = {
 };
 
 export type Action = ReplaceAllAction | UpdateOrAddDataAction | ModalAction;
-  
+
 const reducer = (state: AppState, action: Action): AppState => {
     let index;
     let sortedData: Data[] = [];
@@ -109,7 +109,7 @@ const reducer = (state: AppState, action: Action): AppState => {
             //     return a.name.localeCompare(b.name);
             // });
             return { ...state, data: sortedData };
-                
+
         case 'SET_MODAL':
             console.log('case SET_MODAL');
             console.log(action.payload);
@@ -121,7 +121,7 @@ const reducer = (state: AppState, action: Action): AppState => {
 
 export default reducer;
 
-function sort(data: Data[]) : Data[] {
+function sort(data: Data[]): Data[] {
     const sortedData = data.slice().sort((a, b) => {
 
         if (a.type !== b.type) {
@@ -134,7 +134,7 @@ function sort(data: Data[]) : Data[] {
 
         return a.name.localeCompare(b.name);
     });
-    
+
     return sortedData;
 }
 

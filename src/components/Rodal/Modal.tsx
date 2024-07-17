@@ -20,6 +20,7 @@ const Modal: React.FC = () => {
   useEffect(() => {
     let timer: NodeJS.Timeout;
 
+    // if (visible && !data.error) {
     if (visible) {
       setShowModal(false);
       setTimeout(() => {
@@ -71,10 +72,15 @@ const Modal: React.FC = () => {
     height: "fit-content",
   };
 
+  // const customStyles: CSSProperties = {
+  //   ...commonStyles,
+  //   border: data.error ? "10px solid red" : "10px solid green",
+  //   animation: data.error ? "blinkingBackground 0.3s infinite alternate" : undefined, // При потребі вказати інше значення для animation
+  // };
+
   const customStyles: CSSProperties = {
     ...commonStyles,
-    border: data.error ? "10px solid red" : "10px solid green",
-    animation: data.error ? "blinkingBackground 0.3s infinite alternate" : undefined, // При потребі вказати інше значення для animation
+    border: "10px solid green",
   };
 
   return (
@@ -100,9 +106,9 @@ const Modal: React.FC = () => {
           {data.state} - {data.time}
         </p>
         <p className={styles.nameStyles}>{data.first_name}</p>
-        <p className={styles.messageStyles}>{data.error ? messageText[data.errorType]?.message : null}</p>
+        {/* <p className={styles.messageStyles}>{data.error ? messageText[data.errorType]?.message : null}</p> */}
         <div className={styles.buttonsContainer}>
-          {data.error ? (
+          {/* {data.error ? (
             <>
               <ButtonX
                 onClick={() => {
@@ -133,7 +139,7 @@ const Modal: React.FC = () => {
               remainingTime={remainingTime}
               progress={false}
             />
-          )}
+          )} */}
         </div>
         <div className={styles.timerContainer}>{/* Час до закриття: {remainingTime} сек. */}</div>
       </div>
